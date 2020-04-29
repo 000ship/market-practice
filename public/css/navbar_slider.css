@@ -1,0 +1,163 @@
+/* General */
+
+body {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #a5a5a5;
+  background-color: #f7f7f7;
+  text-align: left;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Navbar */
+
+nav {
+  padding: 25px;
+  font-weight: bold;
+  transition: all 200ms linear;
+}
+
+.navbar-fixed-top.scrolled {
+  background-color: rgba(0, 0, 0, 0.88);
+  min-height: 10px;
+  min-height: 35px;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+ul>li>a, .navbar-brand {
+  color: #fff;
+}
+
+.weather {
+  margin-right: 26px;
+  display: inline-block;
+  vertical-align: middle;
+  text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+}
+
+.temparature {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-right: 4px;
+}
+
+.weather-icon {
+  display: inline-block;
+  vertical-align: middle;
+  text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+  box-sizing: border-box;
+}
+
+.header-search-container {
+  position: relative;
+  display: inline-block;
+  margin-right: 50px;
+}
+
+.header-search-input {
+  display: inline-block;
+  width: 262px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding-left: 49px;
+  color: #fff;
+}
+
+.header-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 25px;
+  transform: translateY(-50%);
+  vertical-align: middle;
+  text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+}
+
+.img-author {
+  width: 40px;
+  height: 40px;
+  margin-right: 18px;
+  border: 1px solid white;
+}
+
+/* end navbar */
+
+/* slider */
+
+.front-cover {
+  position: relative;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.slider-img {
+  width: 100%;
+  height: 50%;
+  filter: brightness(40%);
+}
+
+.slider-caption {
+  position: absolute;
+  top: 15%;
+  left: 200px;
+  width: 35%;
+}
+
+.slider-category {
+  width: 83px;
+  height: 28px;
+  background: #899091;
+  border-radius: 14px;
+  text-align: center;
+  display: block;
+  line-height: 28px;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 1);
+  text-transform: uppercase;
+}
+
+.carousel-caption {
+  position: static;
+  display: inline-block;
+  margin: 12px 0;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.27;
+  text-align: left;
+}
+
+.cont-reading {
+  display: block;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* end slider */

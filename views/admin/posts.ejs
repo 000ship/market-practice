@@ -1,0 +1,113 @@
+<%- include('../includes/admin/head.ejs') %>
+	<!-- Left side Menu -->
+	<%- include('../includes/admin/leftPanel.ejs') %>
+				<!-- Right side  -->
+				<div class="col-lg-9">
+					<!-- navbar -->
+					<%- include('../includes/admin/navbar.ejs') %>
+					<!-- panel page -->
+					<!-- Alert -->
+					<div class="row" style="margin: 10px 0; padding: 13px 15px 0px 15px;">
+						<div class="alert alert-success">
+							<strong>Success!</strong> Indicates a successful or positive action.
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="main-panel">
+							<!-- This is where main content Should be placed -->
+							<form class="form-horizontal" id="postForm">
+                                <div class="form-group">
+                                  <label for="title" class="col-sm-2 control-label">Title</label>
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="title" placeholder="Title">
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="imageUrl" class="col-sm-2 control-label">ImageUrl</label>
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="imageUrl" placeholder="ImageUrl">
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content" class="col-sm-2 control-label">Content</label>
+                                    <div class="col-sm-10">
+                                      <input type="text" class="form-control" name="content" placeholder="Content">
+                                    </div>
+                                  </div>
+                               
+                                <div class="form-group">
+                                  <div class="col-sm-offset-2 col-sm-10">
+                                    <a id="formPostBtn" class="btn btn-success">Add Post</a>
+                                  </div>
+                                </div>
+							  </form>
+							  <hr>
+							  <table id="postTable" class="table table-bordered table-hover">
+								 <thead>
+									<tr>
+										<th>ID</th>
+										<th>Title</th>
+										<th>ImageUrl</th>
+										<th>Content</th>
+										<th>Delete</th>
+									</tr>
+								 </thead>
+							  </table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Scripts -->
+        <%- include('../includes/admin/end.ejs') %>
+        <script>
+            $(document).ready(function(){
+			   
+				// Add new Post
+                $("#formPostBtn").on("click", function (e) {
+					e.preventDefault();
+					$.ajax({
+						url: 'http://localhost:3000/post',
+						type: 'post',
+                        data: $("#postForm").serialize(),
+					});
+				});
+
+				// Populating Table
+				var table = $('#postTable').DataTable({
+					ajax: {
+						url: "http://localhost:3000/posts",
+						dataSrc: ""
+					},
+					columns: [
+						{ data: "id" },
+          			  { data: "title" },
+          			  { data: "imageUrl" },
+         			   { data: "content" },
+						{ data: "id",
+					render: function(data){
+						return "<button class='btn btn-danger' id='deletePost' data-post-id=" + data + ">Delete</button>";
+					} 
+					}
+					]
+				});
+
+				//Deleting a post
+				$('#postTable').on('click', '#deletePost', function(){
+					var button = $(this);
+					$.ajax({
+						url: '',
+						method: 'DELETE',
+						success: function(){
+							table.row(button.parents("tr")).remove().draw();
+                            console.log("success");
+						}
+					});
+				});
+
+            });
+        </script>

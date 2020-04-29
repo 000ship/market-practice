@@ -1,0 +1,168 @@
+/* Article Page */
+
+.article-body {
+  padding: 59px 68px 45px 69px;
+  background: #ffffff;
+  border-radius: 6px;
+}
+
+.article-body p {
+  font-size: 18px;
+  line-height: 1.875;
+  color: rgba(0, 0, 0, 0.8);
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  text-align: justify;
+}
+
+.article-share {
+  text-align: right;
+  margin-top: 50px;
+  text-transform: uppercase;
+}
+
+.fa {
+  margin-right: 0;
+  margin-left: 20px;
+}
+
+.news-container {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 70px;
+  margin-top: 100px;
+}
+
+.article-header {
+  position: relative;
+  text-align: center;
+}
+
+.header-img {
+  width: 100%;
+  filter: brightness(50%);
+}
+
+.header-caption {
+  position: absolute;
+  top: 35%;
+  width: 100%;
+  text-align: center;
+}
+
+.header-category {
+  width: 83px;
+  height: 28px;
+  background: #899091;
+  border-radius: 14px;
+  display: inline-block;
+  line-height: 28px;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 1);
+  text-transform: uppercase;
+}
+
+.h-caption {
+  width: 600px;
+  position: static;
+  display: inline-block;
+  margin: 12px 0;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 34px;
+  font-weight: 550;
+  color: #fff;
+  line-height: 1.27;
+}
+
+.article-meta {
+  margin-top: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.img-author {
+  width: 40px;
+  height: 40px;
+  margin-right: 18px;
+  border: 1px solid white;
+}
+/* end article page */
+
+/* REGISTER FORM PAGE */
+
+/* Register form Background image */
+.img-form {
+  background-size: cover;
+  filter: brightness(40%);
+  height: 50%;
+}
+
+.form-body {
+  background-color: #1f1f1f;
+}
+
+.register-form {
+  width: 500px;
+  background-color: white;
+  border-radius: 6px;
+  position: absolute;
+  top: 20%;
+  left: 450px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-top: 44px;
+}
+
+.form-container {
+  position: relative;
+}
+
+.form-input {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #a5a5a5;
+  display: block;
+  width: 100%;
+  height: 42px;
+  border: none;
+  outline: none;
+  border-bottom: solid 1px #ccc;
+  background: transparent;
+  transition: all 200ms ease;
+  margin-top: 20px;
+}
+
+.btn-form {
+  height: 36px;
+  line-height: 36px;
+  border-radius: 18px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn-from-register {
+  background: rgba(45, 223, 128, 0.1);
+  color: rgba(45, 223, 128, 1);
+}
+
+.btn-from-register:hover {
+  background: rgba(45, 223, 128, 1);
+  color: #fff;
+}
+
+.btn-form-login {
+  background: rgba(61, 67, 255, 0.1);
+  color: rgba(61, 67, 255, 1);
+}
+
+.btn-form-login:hover {
+  background: rgba(61, 67, 255, 1);
+  color: #fff;
+}
+/* end register form page */

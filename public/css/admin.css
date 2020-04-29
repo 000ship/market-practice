@@ -1,0 +1,117 @@
+.left-panel {
+	background-color: #212529;
+	font-family: "Open Sans";
+	padding-bottom: 20px;
+	height: 800px;
+}
+
+.panel-brand {
+	font-size: 22px;
+	border-bottom: 1px solid #4e4e52;
+	color: #f1f2f7 !important;
+	line-height: 50px;
+	justify-content: center;
+	white-space: nowrap;
+	text-align: center;
+	width: 100%;
+}
+
+.menu-item {
+	text-align: left;
+	height: 70px;
+	line-height: 30px;
+	font-size: 18px;
+	font-weight: 300;
+	padding: 10px 0;
+	width: 100%;
+}
+
+.menu-item-icon {
+	text-align: left;
+	height: 70px;
+	line-height: 50px;
+	font-size: 35px;
+	font-weight: 300;
+	padding: 10px 0;
+	width: 100%;
+}
+
+.nav-panel {
+	background-color: #fff;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+	color: black;
+	padding: 0 20px 13px 20px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
+	clear: both;
+}
+
+.panel-exit a {
+	color: rgba(0, 0, 0, 0.5);
+	font-size: 18px;
+	height: 50px;
+	line-height: 60px;
+	text-align: center;
+}
+
+.panel-exit a:hover {
+	color: rgba(0, 0, 0, 1);
+}
+
+.main-panel {
+	background-color: #fff;
+	margin: 10px 0;
+	/* height: 750px; */
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
+	padding: 13px 20px 13px 20px;
+}
+
+.dashboard-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	padding: 5px;
+	grid-gap: 1.5em;
+}
+
+.dashboard-item {
+	height: 200px;
+	line-height: 80px;
+	text-align: center;
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	color: white;
+	font-size: 20px;
+	font-family: "Open Sans";
+	padding: 10px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.dashboard-item:hover {
+	opacity: 0.8;
+	cursor: pointer;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.dashboard-item-1 {
+	background-color: #20a8d8;
+}
+
+.dashboard-item-2 {
+	background-color: #63c2de;
+}
+
+.dashboard-item-3 {
+	background-color: #ffc107;
+}
+
+.dashboard-item-4 {
+	background-color: #f86c6b;
+}
+
+.dashboard-item-5 {
+	background-color: #63c2de;
+	margin: 20px 5px;
+	line-height: 170px;
+	font-size: 40px;
+}

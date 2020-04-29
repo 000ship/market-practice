@@ -1,0 +1,59 @@
+<%- include('../includes/admin/head.ejs') %>
+	<!-- Left side Menu -->
+	<%- include('../includes/admin/leftPanel.ejs') %>
+				<!-- Right side  -->
+				<div class="col-lg-9">
+					<!-- navbar -->
+					<%- include('../includes/admin/navbar.ejs') %>
+					<!-- panel page -->
+					<!-- Alert -->
+					<div class="row" style="margin: 10px 0; padding: 13px 15px 0px 15px;">
+						<div class="alert alert-success">
+							<strong>Success!</strong> Indicates a successful or positive action.
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="main-panel">
+							<!-- This is where main content Should be placed -->
+							<div class="dashboard-container">
+								<a href="#">
+									<div class="dashboard-item dashboard-item-1">
+										New Messages <br />
+										<strong style="font-size: 60px;">4</strong>
+									</div>
+								</a>
+								<a href="#">
+									<div class="dashboard-item dashboard-item-2">
+										Total News<br />
+										<strong style="font-size: 60px;">45</strong>
+									</div>
+								</a>
+								<a href="#">
+									<div class="dashboard-item dashboard-item-3">
+										Total Views <br />
+										<strong style="font-size: 60px;">2500</strong>
+									</div>
+								</a>
+								<a href="#">
+									<div class="dashboard-item dashboard-item-4">
+										Total Members<br />
+										<strong style="font-size: 60px;">24</strong>
+									</div>
+								</a>
+							</div>
+							<a href="index.html" target="_blank">
+								<div class="dashboard-item dashboard-item-5">
+									<span href="index.html" target="_blank">Go To Website</span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Scripts -->
+		<%- include('../includes/admin/end.ejs') %>
