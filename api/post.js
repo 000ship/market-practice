@@ -22,3 +22,16 @@ exports.createPost = (req, res, next) => {
 		})
 		.catch((err) => console.log(err));
 };
+
+exports.deletePost = (req, res, next) => {
+	const postId = req.params.postId;
+	Post.findByPk(postId)
+		.then((post) => {
+			// check loged in user
+			post.destroy().then((result) => {});
+			res.status(200).json({ message: "Success!" });
+		})
+		.catch((err) => {
+			res.status(500).json({ message: "Deleting Post failed." });
+		});
+};

@@ -67,16 +67,6 @@
         <script>
             $(document).ready(function(){
 			   
-				// Add new Post
-                $("#formPostBtn").on("click", function (e) {
-					e.preventDefault();
-					$.ajax({
-						url: 'http://localhost:3000/post',
-						type: 'post',
-                        data: $("#postForm").serialize(),
-					});
-				});
-
 				// Populating Table
 				var table = $('#postTable').DataTable({
 					ajax: {
@@ -96,11 +86,25 @@
 					]
 				});
 
+				// Add new Post
+                $("#formPostBtn").on("click", function (e) {
+					e.preventDefault();
+					$.ajax({
+						url: 'http://localhost:3000/post',
+						type: 'post',
+						data: $("#postForm").serialize(),
+						success: function(){
+							table.ajax.reload();
+							console.log('added successfully!');
+						}
+					});
+				});
+				
 				//Deleting a post
-				$('#postTable').on('click', '#deletePost', function(){
+				$('#postTable').on('click', '#deletePost', function() {
 					var button = $(this);
 					$.ajax({
-						url: '',
+						url: 'http://localhost:3000/post/' + button.attr("data-post-id"),
 						method: 'DELETE',
 						success: function(){
 							table.row(button.parents("tr")).remove().draw();
