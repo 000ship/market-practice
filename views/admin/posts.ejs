@@ -19,7 +19,7 @@
 		<div class="main-panel">
 			<!-- Link to open the modal -->
 			<p>
-				<a class="btn btn-success btn-block" href="#post-modal" rel="modal:open">Add new Post</a>
+				<a id="open-post-modal" class="btn btn-success btn-block" href="#post-modal">New Post</a>
 			</p>
 			<!-- modal window (content) -->
 			<%- include('../includes/admin/post-modal.ejs') %>
@@ -31,6 +31,7 @@
 						<th>Title</th>
 						<th>ImageUrl</th>
 						<th>Content</th>
+						<th>Edit</th>
 						<th>Delete</th>
 					</tr>
 				</thead>

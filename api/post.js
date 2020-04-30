@@ -8,6 +8,15 @@ exports.getPosts = (req, res, next) => {
 		.catch((err) => console.log(err));
 };
 
+exports.getPost = (req, res, next) => {
+	const postId = req.params.postId;
+	Post.findByPk(postId)
+		.then((post) => {
+			res.status(200).json(post);
+		})
+		.catch((err) => console.log(err));
+};
+
 exports.createPost = (req, res, next) => {
 	const post = new Post({
 		title: req.body.title,
@@ -34,4 +43,22 @@ exports.deletePost = (req, res, next) => {
 		.catch((err) => {
 			res.status(500).json({ message: "Deleting Post failed." });
 		});
+};
+
+exports.updatePost = (req, res, next) => {
+	const postId = req.params.postId;
+	Post.findByPk(postId)
+		.then((post) => {
+			post.title = req.body.title;
+			post.imageUrl = req.body.imageUrl;
+			post.content = req.body.content;
+
+			return post
+				.save()
+				.then((result) => {
+					res.status(200).json({ message: "post updated successfully", post: result });
+				})
+				.catch((err) => console.log(err));
+		})
+		.catch((err) => console.log(err));
 };
