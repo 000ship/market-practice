@@ -20,7 +20,7 @@ exports.getPost = (req, res, next) => {
 exports.createPost = (req, res, next) => {
 	const post = new Post({
 		title: req.body.title,
-		imageUrl: req.body.imageUrl,
+		imageUrl: req.file.path,
 		content: req.body.content,
 	});
 

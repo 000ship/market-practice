@@ -2,19 +2,35 @@ const express = require("express");
 const sequelize = require("./util/database");
 const bodyParser = require("body-parser");
 const path = require("path");
+const multer = require("multer");
 
 const app = express();
 
+// multer
+const fileStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "images");
+	},
+	filename: (req, file, cb) => {
+		cb(null, "localhost" + "-" + file.originalname);
+	},
+});
+
+const fileFilter = (req, file, cb) => {
+	if (
+		file.mimetype === "image/png" ||
+		file.mimetype === "image/jpg" ||
+		file.mimetype === "image/jpeg"
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+
 app.use(bodyParser.urlencoded({ extended: false })); // x-www-form-urlencoded <form>
 // app.use(bodyParser.json()); // apllication/json
-
-// Allowing Front end apps from other severs
-// app.use((req, res, next) => {
-// 	res.setHeader("Access-Control-Allow-Origin", "*");
-// 	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
-// 	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-// 	next();
-// });
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
 
 // Usings EJS view engine, and telling it to look for views in views directory
 app.set("view engine", "ejs");

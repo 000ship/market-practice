@@ -1,5 +1,6 @@
 $(function () {
 	var button = null;
+	var form = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
 	// Resize $ Change Background on Scroll
 	$(document).scroll(function () {
 		var $nav = $(".navbar-fixed-top");
@@ -49,15 +50,21 @@ $(function () {
 	// Add new Post
 	$("#formPostBtn").on("click", function (e) {
 		e.preventDefault();
+		var formData = new FormData(form);
 		if (button) {
 			// edit
 			$.ajax({
 				url: "http://localhost:3000/post/" + button.attr("data-post-id"),
-				method: "PUT",
-				data: $("#postForm").serialize(),
+				type: "put",
+				enctype: "multipart/form-data",
+				contentType: false,
+				processData: false, //important
+				cache: false,
+				data: formData,
+				// data: new FormData(form),
 				success: function () {
 					table.ajax.reload();
-					console.log("edited successfully!");
+					console.log("Edited successfully!");
 				},
 			});
 		} else {
@@ -65,7 +72,12 @@ $(function () {
 			$.ajax({
 				url: "http://localhost:3000/post",
 				type: "post",
-				data: $("#postForm").serialize(),
+				enctype: "multipart/form-data",
+				contentType: false,
+				processData: false, //important
+				cache: false,
+				data: formData,
+				// data: new FormData(form),
 				success: function () {
 					table.ajax.reload();
 					console.log("added successfully!");
@@ -94,8 +106,8 @@ $(function () {
 			url: "http://localhost:3000/post/" + button.attr("data-post-id"),
 			success: function (data) {
 				$("#post-title-input").val(data.title);
-				$("#post-imageUrl-input").val(data.imageUrl);
 				$("#post-content-input").val(data.content);
+				$("#post-imageUrl-input").val("");
 				$("#formPostBtn").text("Update");
 				$("#formPostTitle").text("Edit");
 			},
@@ -108,8 +120,8 @@ $(function () {
 		event.preventDefault();
 		button = null;
 		$("#post-title-input").val("");
-		$("#post-imageUrl-input").val("");
 		$("#post-content-input").val("");
+		$("#post-imageUrl-input").val("");
 		$("#formPostBtn").text("Add Post");
 		$("#formPostTitle").text("Insert");
 
