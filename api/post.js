@@ -38,6 +38,8 @@ exports.getPost = (req, res, next) => {
 exports.createPost = (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
+		// Delete uploaded image incase of validation error
+		clearImage("images/" + req.file.filename);
 		const error = new Error("Validation failed; entered data is incorrect.");
 		error.statusCode = 422;
 		throw error;
@@ -85,6 +87,8 @@ exports.deletePost = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
+		// Delete uploaded image incase of validation error
+		clearImage("images/" + req.file.filename);
 		const error = new Error("Validation failed; entered data is incorrect.");
 		error.statusCode = 422;
 		throw error;
@@ -118,7 +122,9 @@ exports.updatePost = (req, res, next) => {
 			post.imageUrl = imageUrl;
 			post.content = content;
 
-			return post.save();
+			return post.save().then((result) => {
+				res.status(200).json({ message: "post Updated successfully", post: result });
+			});
 		})
 		.catch((err) => {
 			if (!err.statusCode) {
