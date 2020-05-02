@@ -39,6 +39,7 @@ exports.deletePost = (req, res, next) => {
 	Post.findByPk(postId)
 		.then((post) => {
 			// check loged in user
+			clearImage(post.imageUrl);
 			post.destroy().then((result) => {});
 			res.status(200).json({ message: "Success!" });
 		})
