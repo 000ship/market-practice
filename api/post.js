@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Post = require("../models/post");
+const { validationResult } = require("express-validator");
 
 exports.getPosts = (req, res, next) => {
 	Post.findAll()
@@ -20,6 +21,13 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res
+			.status(422)
+			.json({ message: "validation failed. entered data is incorrect!", errors: errors.array() });
+	}
+
 	const post = new Post({
 		title: req.body.title,
 		imageUrl: "images/" + req.file.filename,
@@ -49,6 +57,13 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res
+			.status(422)
+			.json({ message: "validation failed. entered data is incorrect!", errors: errors.array() });
+	}
+
 	const postId = req.params.postId;
 	const title = req.body.title;
 	const content = req.body.content;
