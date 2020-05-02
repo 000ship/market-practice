@@ -1,44 +1,55 @@
-<%- include('../includes/admin/head.ejs') %>
-<!-- Left side Menu -->
-<%- include('../includes/admin/leftPanel.ejs') %>
-<!-- Right side  -->
-<div class="col-lg-9">
-	<!-- navbar -->
-	<%- include('../includes/admin/navbar.ejs') %>
-	<!-- panel page -->
-	<!-- Alert -->
-	<div class="row" style="margin: 10px 0; padding: 13px 15px 0px 15px;">
-		<div class="alert alert-success">
-			<strong>Success!</strong> Indicates a successful or positive action.
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-	</div>
-	<div class="row">
-		<div class="main-panel">
-			<!-- Link to open the modal -->
-			<p>
-				<a id="open-post-modal" class="btn btn-success btn-block" href="#post-modal">New Post</a>
-			</p>
-			<!-- modal window (content) -->
-			<%- include('../includes/admin/post-modal.ejs') %>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<%- include('../includes/admin/head.ejs') %>
+	<body style="background-color: #f7f2f7;">
+		<div class="container-fluid">
+			<div class="row">
+				<!-- Left side Menu -->
+				<%- include('../includes/admin/leftPanel.ejs') %>
+				<!-- Right side  -->
+				<div class="col-lg-9">
+					<!-- navbar -->
+					<%- include('../includes/admin/navbar.ejs') %>
+					<!-- panel page -->
+					<!-- Alert -->
+					<div class="row" style="margin: 10px 0; padding: 13px 15px 0px 15px;">
+						<div class="alert alert-success">
+							<strong>Success!</strong> Indicates a successful or positive action.
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="main-panel">
+							<!-- Link to open the modal -->
+							<p>
+								<a id="open-post-modal" class="btn btn-success btn-block" href="#post-modal"
+									>New Post</a
+								>
+							</p>
+							<!-- modal window (content) -->
+							<%- include('../includes/admin/post-modal.ejs') %>
 
-			<table id="postTable" class="table table-bordered table-hover">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Title</th>
-						<th>ImageUrl</th>
-						<th>Content</th>
-						<th>Edit</th>
-						<th>Delete</th>
-					</tr>
-				</thead>
-			</table>
-		</div>
-	</div>
-</div>
+							<table id="postTable" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Title</th>
+										<th>ImageUrl</th>
+										<th>Content</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 
-<!-- Scripts -->
-<%- include('../includes/admin/end.ejs') %>
+			<!-- Scripts -->
+			<%- include('../includes/admin/end.ejs') %>
+		</div>
+	</body>
+</html>
