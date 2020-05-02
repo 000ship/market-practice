@@ -108,6 +108,7 @@ $(function () {
 				$("#post-title-input").val(data.title);
 				$("#post-content-input").val(data.content);
 				$("#post-imageUrl-input").val("");
+				$("#oldImage").val(data.imageUrl);
 				$("#formPostBtn").text("Update");
 				$("#formPostTitle").text("Edit");
 			},

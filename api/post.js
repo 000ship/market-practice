@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const Post = require("../models/post");
 
 exports.getPosts = (req, res, next) => {
@@ -20,7 +22,7 @@ exports.getPost = (req, res, next) => {
 exports.createPost = (req, res, next) => {
 	const post = new Post({
 		title: req.body.title,
-		imageUrl: req.file.path,
+		imageUrl: "images/" + req.file.filename,
 		content: req.body.content,
 	});
 
@@ -47,11 +49,28 @@ exports.deletePost = (req, res, next) => {
 
 exports.updatePost = (req, res, next) => {
 	const postId = req.params.postId;
+	const title = req.body.title;
+	const content = req.body.content;
+	let imageUrl = req.body.oldImage;
+
+	if (req.file) {
+		imageUrl = "images/" + req.file.filename;
+	}
+	if (!imageUrl) {
+		console.log("422-no file picked");
+	}
+
 	Post.findByPk(postId)
 		.then((post) => {
-			post.title = req.body.title;
-			post.imageUrl = req.body.imageUrl;
-			post.content = req.body.content;
+			if (!post) {
+				console.log("no post found");
+			}
+			if (imageUrl !== post.imageUrl) {
+				clearImage(post.imageUrl);
+			}
+			post.title = title;
+			post.imageUrl = imageUrl;
+			post.content = content;
 
 			return post
 				.save()
@@ -61,4 +80,10 @@ exports.updatePost = (req, res, next) => {
 				.catch((err) => console.log(err));
 		})
 		.catch((err) => console.log(err));
+};
+
+// Deleting image when deleting post or editing
+const clearImage = (filePath) => {
+	filePath = path.join(__dirname, "..", filePath);
+	fs.unlink(filePath, (err) => console.log(err));
 };
