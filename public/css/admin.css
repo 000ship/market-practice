@@ -119,3 +119,16 @@
 .modal a.close-modal {
 	display: none;
 }
+
+/* Validation */
+input:invalid:focus {
+	border: 1px solid red;
+}
+
+input:valid {
+	border: 1px solid green;
+}
+
+label.error {
+	color: red;
+}

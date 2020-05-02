@@ -1,5 +1,6 @@
 $(function () {
 	var button = null;
+	var validator = $("#postForm").validate();
 	var form = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
 	// Resize $ Change Background on Scroll
 	$(document).scroll(function () {
@@ -59,38 +60,44 @@ $(function () {
 	$("#formPostBtn").on("click", function (e) {
 		e.preventDefault();
 		var formData = new FormData(form);
-		if (button) {
-			// edit
-			$.ajax({
-				url: "http://localhost:3000/post/" + button.attr("data-post-id"),
-				type: "put",
-				enctype: "multipart/form-data",
-				contentType: false,
-				processData: false, //important
-				cache: false,
-				data: formData,
-				// data: new FormData(form),
-				success: function () {
-					table.ajax.reload();
-					console.log("Edited successfully!");
-				},
-			});
+		var saveBtn = $("#formPostBtn");
+		if ($("#postForm").valid()) {
+			saveBtn.attr("rel", "modal:close");
+			if (button) {
+				// edit
+				$.ajax({
+					url: "http://localhost:3000/post/" + button.attr("data-post-id"),
+					type: "put",
+					enctype: "multipart/form-data",
+					contentType: false,
+					processData: false, //important
+					cache: false,
+					data: formData,
+					// data: new FormData(form),
+					success: function () {
+						table.ajax.reload();
+						console.log("Edited successfully!");
+					},
+				});
+			} else {
+				// add
+				$.ajax({
+					url: "http://localhost:3000/post",
+					type: "post",
+					enctype: "multipart/form-data",
+					contentType: false,
+					processData: false, //important
+					cache: false,
+					data: formData,
+					// data: new FormData(form),
+					success: function () {
+						table.ajax.reload();
+						console.log("added successfully!");
+					},
+				});
+			}
 		} else {
-			// add
-			$.ajax({
-				url: "http://localhost:3000/post",
-				type: "post",
-				enctype: "multipart/form-data",
-				contentType: false,
-				processData: false, //important
-				cache: false,
-				data: formData,
-				// data: new FormData(form),
-				success: function () {
-					table.ajax.reload();
-					console.log("added successfully!");
-				},
-			});
+			saveBtn.removeAttr("rel");
 		}
 	});
 
@@ -116,6 +123,7 @@ $(function () {
 				$("#post-title-input").val(data.title);
 				$("#post-content-input").val(data.content);
 				$("#post-imageUrl-input").val("");
+				$("#post-imageUrl-input").removeAttr("required");
 				$("#oldImage").val(data.imageUrl);
 				$("#formPostBtn").text("Update");
 				$("#formPostTitle").text("Edit");
@@ -128,6 +136,7 @@ $(function () {
 	$("#open-post-modal").on("click", function (event) {
 		event.preventDefault();
 		button = null;
+		validator.resetForm();
 		$("#post-title-input").val("");
 		$("#post-content-input").val("");
 		$("#post-imageUrl-input").val("");
