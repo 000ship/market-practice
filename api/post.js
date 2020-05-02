@@ -8,24 +8,45 @@ exports.getPosts = (req, res, next) => {
 		.then((posts) => {
 			res.status(200).json(posts);
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			if (!err.statusCode) {
+				err.statusCode = 500;
+			}
+			next(err);
+		});
 };
 
 exports.getPost = (req, res, next) => {
 	const postId = req.params.postId;
 	Post.findByPk(postId)
 		.then((post) => {
+			if (!post) {
+				const error = new Error("Could not find post.");
+				error.statusCode = 404;
+				throw error;
+			}
 			res.status(200).json(post);
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			if (!err.statusCode) {
+				err.statusCode = 500;
+			}
+			next(err);
+		});
 };
 
 exports.createPost = (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res
-			.status(422)
-			.json({ message: "validation failed. entered data is incorrect!", errors: errors.array() });
+		const error = new Error("Validation failed; entered data is incorrect.");
+		error.statusCode = 422;
+		throw error;
+	}
+
+	if (!req.file) {
+		const error = new Error("No image provided!");
+		error.statusCode = 422;
+		throw error;
 	}
 
 	const post = new Post({
@@ -39,7 +60,12 @@ exports.createPost = (req, res, next) => {
 		.then((result) => {
 			res.status(201).json({ message: "post created successfully", post: result });
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			if (!err.statusCode) {
+				err.statusCode = 500;
+			}
+			next(err);
+		});
 };
 
 exports.deletePost = (req, res, next) => {
@@ -59,9 +85,9 @@ exports.deletePost = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res
-			.status(422)
-			.json({ message: "validation failed. entered data is incorrect!", errors: errors.array() });
+		const error = new Error("Validation failed; entered data is incorrect.");
+		error.statusCode = 422;
+		throw error;
 	}
 
 	const postId = req.params.postId;
@@ -73,13 +99,17 @@ exports.updatePost = (req, res, next) => {
 		imageUrl = "images/" + req.file.filename;
 	}
 	if (!imageUrl) {
-		console.log("422-no file picked");
+		const error = new Error("No file pickd!");
+		error.statusCode = 422;
+		throw error;
 	}
 
 	Post.findByPk(postId)
 		.then((post) => {
 			if (!post) {
-				console.log("no post found");
+				const error = new Error("Could not find post.");
+				error.statusCode = 404;
+				throw error;
 			}
 			if (imageUrl !== post.imageUrl) {
 				clearImage(post.imageUrl);
@@ -88,14 +118,14 @@ exports.updatePost = (req, res, next) => {
 			post.imageUrl = imageUrl;
 			post.content = content;
 
-			return post
-				.save()
-				.then((result) => {
-					res.status(200).json({ message: "post updated successfully", post: result });
-				})
-				.catch((err) => console.log(err));
+			return post.save();
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			if (!err.statusCode) {
+				err.statusCode = 500;
+			}
+			next(err);
+		});
 };
 
 // Deleting image when deleting post or editing
