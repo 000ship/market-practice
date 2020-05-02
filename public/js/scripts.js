@@ -18,10 +18,18 @@ $(function () {
 				data: "id",
 			},
 			{
-				data: "title",
+				data: "imageUrl",
+				render: function (data) {
+					return (
+						"<img class='img-rounded img-responsive' src='" +
+						"http://localhost:3000/" +
+						data +
+						"'/>"
+					);
+				},
 			},
 			{
-				data: "imageUrl",
+				data: "title",
 			},
 			{
 				data: "content",
