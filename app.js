@@ -69,7 +69,8 @@ app.use((error, req, res, next) => {
 Post.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Post);
 
-// sequelize.sync({ force: true })
+// sequelize
+// 	.sync({ force: true })
 sequelize
 	.sync()
 	.then((result) => {
