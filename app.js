@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const multer = require("multer");
 
+const Post = require("./models/post");
+const User = require("./models/user");
+
 const app = express();
 
 // multer
@@ -41,6 +44,7 @@ const adminRoutes = require("./routes/admin");
 
 // Api Routes
 const apiPostRoutes = require("./routes/api/post");
+const apiAuthRoutes = require("./routes/api/auth");
 
 // making public directory accesible for static fils like css, images, etc.
 app.use(express.static(path.join(__dirname, "public")));
@@ -48,7 +52,9 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Using routes
 app.use("/admin", adminRoutes);
+
 app.use(apiPostRoutes);
+app.use(apiAuthRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
@@ -57,6 +63,10 @@ app.use((error, req, res, next) => {
 	const message = error.message;
 	res.status(status).json({ message: message });
 });
+
+// Table Associations
+Post.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(Post);
 
 // sequelize.sync({ force: true })
 sequelize
