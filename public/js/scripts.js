@@ -13,6 +13,9 @@ $(function () {
 		ajax: {
 			url: "http://localhost:3000/posts",
 			dataSrc: "",
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
 		},
 		columns: [
 			{

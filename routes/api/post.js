@@ -3,9 +3,11 @@ const { body } = require("express-validator");
 
 const apiController = require("../../api/post");
 
+const isAuth = require("../../middleware/is-auth");
+
 const router = express.Router();
 
-router.get("/posts", apiController.getPosts);
+router.get("/posts", isAuth, apiController.getPosts);
 router.get("/post/:postId", apiController.getPost);
 router.post(
 	"/post",
