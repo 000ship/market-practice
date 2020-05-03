@@ -59,7 +59,7 @@ $(function () {
 		],
 	});
 
-	// Add new Post
+	// Add new Post or Edit Existing Post
 	$("#formPostBtn").on("click", function (e) {
 		e.preventDefault();
 		var formData = new FormData(form);
@@ -71,6 +71,9 @@ $(function () {
 				$.ajax({
 					url: "http://localhost:3000/post/" + button.attr("data-post-id"),
 					type: "put",
+					headers: {
+						Authorization: "bearer " + localStorage.getItem("token"),
+					},
 					enctype: "multipart/form-data",
 					contentType: false,
 					processData: false, //important
@@ -87,6 +90,9 @@ $(function () {
 				$.ajax({
 					url: "http://localhost:3000/post",
 					type: "post",
+					headers: {
+						Authorization: "bearer " + localStorage.getItem("token"),
+					},
 					enctype: "multipart/form-data",
 					contentType: false,
 					processData: false, //important
@@ -110,6 +116,9 @@ $(function () {
 		$.ajax({
 			url: "http://localhost:3000/post/" + button.attr("data-post-id"),
 			method: "DELETE",
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
 			success: function () {
 				table.row(button.parents("tr")).remove().draw();
 				console.log("success");
@@ -121,6 +130,9 @@ $(function () {
 	$("#postTable").on("click", "#editPost", function () {
 		button = $(this);
 		$.ajax({
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
 			url: "http://localhost:3000/post/" + button.attr("data-post-id"),
 			success: function (data) {
 				$("#post-title-input").val(data.title);
