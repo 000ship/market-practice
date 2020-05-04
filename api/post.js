@@ -87,7 +87,18 @@ exports.deletePost = (req, res, next) => {
 	const postId = req.params.postId;
 	Post.findByPk(postId)
 		.then((post) => {
-			// check loged in user
+			if (!post) {
+				const error = new Error("Could not find post.");
+				error.statusCode = 404;
+				throw error;
+			}
+			// Check if the post is created by the logged in user or not
+			if (post.userId !== req.userId) {
+				console.log("you are not authorized!");
+				const error = new Error("Not Authorized");
+				error.statusCode = 404;
+				throw error;
+			}
 			clearImage(post.imageUrl);
 			post.destroy().then((result) => {});
 			res.status(200).json({ message: "Success!" });
@@ -128,6 +139,14 @@ exports.updatePost = (req, res, next) => {
 				error.statusCode = 404;
 				throw error;
 			}
+			// Check if the post is created by the logged in user or not
+			if (post.userId !== req.userId) {
+				console.log("you are not authorized!");
+				const error = new Error("Not Authorized");
+				error.statusCode = 404;
+				throw error;
+			}
+
 			if (imageUrl !== post.imageUrl) {
 				clearImage(post.imageUrl);
 			}
