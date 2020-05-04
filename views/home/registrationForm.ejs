@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<%- include('../includes/admin/head.ejs') %>
+	<title>Registration Forn</title>
+
+	<body>
+		<!-- Navigation Bar -->
+		<%- include('../includes/navbar.ejs') %>
+
+		<!-- Page Content -->
+		<div class="form-container">
+			<img src="images/front-cover-3.jpg" class="img-responsive img-form" alt="" />
+
+			<div class="row">
+				<!-- Main Content -->
+				<div class="col-lg-6 offset-lg-3 register-form">
+					<ul class="nav nav-tabs nav-justified">
+						<li class="active"><a data-toggle="tab" href="#menu1">Signup</a></li>
+						<li><a data-toggle="tab" href="#menu2">Login</a></li>
+					</ul>
+					<div class="tab-content">
+						<!-- signup -->
+						<%- include('../includes/admin/signup-form.ejs') %>
+						<!-- Login -->
+						<%- include('../includes/admin/login-form.ejs') %>
+					</div>
+				</div>
+				<!-- End Main Content -->
+			</div>
+		</div>
+		<!-- End Page Content -->
+
+		<!-- Footer -->
+		<%- include('../includes/footer.ejs') %>
+
+		<!-- Scripts -->
+		<%- include('../includes/admin/end.ejs') %>
+	</body>
+</html>

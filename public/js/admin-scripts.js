@@ -2,12 +2,10 @@ $(function () {
 	var button = null;
 	var validator = $("#postForm").validate();
 	var form = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
-	// Resize $ Change Background on Scroll
-	$(document).scroll(function () {
-		var $nav = $(".navbar-fixed-top");
-		$nav.toggleClass("scrolled", $(this).scrollTop() > $nav.height());
-	});
 
+	////////////////////////////////////////
+	///////////// POST /////////////////////
+	////////////////////////////////////////
 	// Populating Table
 	var table = $("#postTable").DataTable({
 		ajax: {

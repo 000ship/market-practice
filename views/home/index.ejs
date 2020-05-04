@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<%- include('../includes/admin/head.ejs') %>
+	<title>Market Practice</title>
+	<body>
+		<!-- Navigation Bar -->
+		<%- include('../includes/navbar.ejs') %>
+
+		<!-- Slider -->
+		<%- include('../includes/slider.ejs') %>
+
+		<!-- Page Content -->
+		<div class="container">
+			<div class="row">
+				<!-- Main Content -->
+				<div class="col-lg-9 main-content">
+					<!-- Category Panel -->
+					<%- include('../includes/category-panel.ejs') %>
+
+					<!-- News Section -->
+					<div class="container-fluid">
+						<div class="news-container">
+							<!-- News 1 -->
+							<div class="news-card">
+								<img
+									class="news-card-img img-responsive"
+									src="images/front-cover-3.jpg"
+									alt="News Alt"
+								/>
+								<div class="news-card-body">
+									<a href="article.html" lass="news-title"
+										>After Peter Parker Got bite by a spider, gained super power strenth and
+										instincts of a spider.</a
+									>
+									<p class="news-meta">Peter Parker 29, 2017 at 9:48 am</p>
+								</div>
+							</div>
+							<!-- News 2 -->
+							<div class="news-card">
+								<img
+									class="news-card-img img-responsive"
+									src="images/front-cover-1.jpg"
+									alt="News Alt"
+								/>
+								<div class="news-card-body">
+									<a href="article.html" class="news-title"
+										>Captain America is the first avenger and strongest in terms of his believes,
+										which makes him Stronger.</a
+									>
+									<p class="news-meta">Chris Evans 29, 2017 at 9:48 am</p>
+								</div>
+							</div>
+							<!-- News 3 -->
+							<div class="news-card">
+								<img
+									class="news-card-img img-responsive"
+									src="images/front-cover-2.jpg"
+									alt="News Alt"
+								/>
+								<div class="news-card-body">
+									<a href="article.html" class="news-title"
+										>Raised In the gutter. Really started From the bottom, they rised up when there
+										was no hope.</a
+									>
+									<p class="news-meta">Hamato Yoshi 29, 2017 at 9:48 am</p>
+								</div>
+							</div>
+							<!-- News 4 -->
+							<div class="news-card">
+								<img class="news-card-img img-responsive" src="images/news-4.jpg" alt="News Alt" />
+								<div class="news-card-body">
+									<a href="article.html" class="news-title"
+										>After Peter Parker Got bite by a spider, gained super power strenth and
+										instincts of a spider.</a
+									>
+									<p class="news-meta">Katy LiuSep 29, 2017 at 9:48 am</p>
+								</div>
+							</div>
+							<!-- News 5 -->
+							<div class="news-card">
+								<img class="news-card-img img-responsive" src="images/news-5.jpg" alt="News Alt" />
+								<div class="news-card-body">
+									<a href="article.html" class="news-title"
+										>After Peter Parker Got bite by a spider, gained super power strenth and
+										instincts of a spider.</a
+									>
+									<p class="news-meta">Matt Demon 29, 2017 at 9:48 am</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End News Section -->
+				</div>
+				<!-- End Main Content -->
+				<!-- SideBar -->
+				<div class="col-lg-3 sidebar-content">
+					<!-- Trending -->
+					<%- include('../includes/trending.ejs') %>
+					<!--  -->
+					<hr />
+					<!-- Recent Posts  -->
+					<%- include('../includes/recently.ejs') %>
+				</div>
+				<!-- End Sidebar -->
+			</div>
+		</div>
+		<!-- End Page Content -->
+
+		<!-- Footer -->
+		<%- include('../includes/footer.ejs') %>
+
+		<!-- Scripts -->
+		<%- include('../includes/admin/end.ejs') %>
+	</body>
+</html>

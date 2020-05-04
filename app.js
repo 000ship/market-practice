@@ -41,6 +41,7 @@ app.set("views", "views");
 
 // View routes
 const adminRoutes = require("./routes/admin");
+const homeRoutes = require("./routes/home");
 
 // Api Routes
 const apiPostRoutes = require("./routes/api/post");
@@ -52,9 +53,10 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Using routes
 app.use("/admin", adminRoutes);
+app.use(homeRoutes);
 
 app.use(apiPostRoutes);
-app.use(apiAuthRoutes);
+app.use("/auth", apiAuthRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
