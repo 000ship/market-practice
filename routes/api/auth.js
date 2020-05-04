@@ -27,6 +27,14 @@ router.put(
 			.trim()
 			.not()
 			.isEmpty(),
+		body("passwordRepeat")
+			.trim()
+			.custom((value, { req }) => {
+				if (value !== req.body.password) {
+					throw new Error("Passwords have to match");
+				}
+				return true;
+			}),
 	],
 	apiAuthController.signup
 );
