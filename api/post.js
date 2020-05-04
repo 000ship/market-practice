@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Post = require("../models/post");
+const User = require("../models/user");
 const { validationResult } = require("express-validator");
 
 exports.getPosts = (req, res, next) => {
@@ -51,16 +52,28 @@ exports.createPost = (req, res, next) => {
 		throw error;
 	}
 
-	const post = new Post({
-		title: req.body.title,
-		imageUrl: "images/" + req.file.filename,
-		content: req.body.content,
-	});
-
-	return post
-		.save()
-		.then((result) => {
-			res.status(201).json({ message: "post created successfully", post: result });
+	User.findByPk(req.userId)
+		.then((user) => {
+			if (!user) {
+				const error = new Error("Could not find user.");
+				error.statusCode = 404;
+				throw error;
+			}
+			user
+				.createPost({
+					title: req.body.title,
+					imageUrl: "images/" + req.file.filename,
+					content: req.body.content,
+				})
+				.then((result) => {
+					res.status(201).json({ message: "post created successfully", post: result });
+				})
+				.catch((err) => {
+					if (!err.statusCode) {
+						err.statusCode = 500;
+					}
+					next(err);
+				});
 		})
 		.catch((err) => {
 			if (!err.statusCode) {
