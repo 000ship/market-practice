@@ -4,39 +4,37 @@ const Post = require("../models/post");
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
 
-exports.getPosts = (req, res, next) => {
-	Post.findAll()
-		.then((posts) => {
-			res.status(200).json(posts);
-		})
-		.catch((err) => {
-			if (!err.statusCode) {
-				err.statusCode = 500;
-			}
-			next(err);
-		});
+exports.getPosts = async (req, res, next) => {
+	try {
+		const posts = await Post.findAll();
+		res.status(200).json(posts);
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
 };
 
-exports.getPost = (req, res, next) => {
+exports.getPost = async (req, res, next) => {
 	const postId = req.params.postId;
-	Post.findByPk(postId)
-		.then((post) => {
-			if (!post) {
-				const error = new Error("Could not find post.");
-				error.statusCode = 404;
-				throw error;
-			}
-			res.status(200).json(post);
-		})
-		.catch((err) => {
-			if (!err.statusCode) {
-				err.statusCode = 500;
-			}
-			next(err);
-		});
+	try {
+		const post = await Post.findByPk(postId);
+		if (!post) {
+			const error = new Error("Could not find post.");
+			error.statusCode = 404;
+			throw error;
+		}
+		res.status(200).json(post);
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
 };
 
-exports.createPost = (req, res, next) => {
+exports.createPost = async (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		// Delete uploaded image incase of validation error
@@ -52,63 +50,53 @@ exports.createPost = (req, res, next) => {
 		throw error;
 	}
 
-	User.findByPk(req.userId)
-		.then((user) => {
-			if (!user) {
-				const error = new Error("Could not find user.");
-				error.statusCode = 404;
-				throw error;
-			}
-			user
-				.createPost({
-					title: req.body.title,
-					imageUrl: "images/" + req.file.filename,
-					content: req.body.content,
-				})
-				.then((result) => {
-					res.status(201).json({ message: "post created successfully", post: result });
-				})
-				.catch((err) => {
-					if (!err.statusCode) {
-						err.statusCode = 500;
-					}
-					next(err);
-				});
-		})
-		.catch((err) => {
-			if (!err.statusCode) {
-				err.statusCode = 500;
-			}
-			next(err);
+	try {
+		const user = await User.findByPk(req.userId);
+
+		if (!user) {
+			const error = new Error("Could not find user.");
+			error.statusCode = 404;
+			throw error;
+		}
+		const result = await user.createPost({
+			title: req.body.title,
+			imageUrl: "images/" + req.file.filename,
+			content: req.body.content,
 		});
+		res.status(201).json({ message: "post created successfully", post: result });
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
 };
 
-exports.deletePost = (req, res, next) => {
+exports.deletePost = async (req, res, next) => {
 	const postId = req.params.postId;
-	Post.findByPk(postId)
-		.then((post) => {
-			if (!post) {
-				const error = new Error("Could not find post.");
-				error.statusCode = 404;
-				throw error;
-			}
-			// Check if the post is created by the logged in user or not
-			if (post.userId !== req.userId) {
-				console.log("you are not authorized!");
-				const error = new Error("Not Authorized");
-				error.statusCode = 404;
-				throw error;
-			}
-			clearImage(post.imageUrl);
-			post.destroy().then((result) => {});
-			res.status(200).json({ message: "Success!" });
-		})
-		.catch((err) => {
-			res.status(500).json({ message: "Deleting Post failed." });
-		});
+	try {
+		const post = await Post.findByPk(postId);
+		if (!post) {
+			const error = new Error("Could not find post.");
+			error.statusCode = 404;
+			throw error;
+		}
+		// Check if the post is created by the logged in user or not
+		if (post.userId !== req.userId) {
+			console.log("you are not authorized!");
+			const error = new Error("Not Authorized");
+			error.statusCode = 404;
+			throw error;
+		}
+		clearImage(post.imageUrl);
+		await post.destroy();
+		res.status(200).json({ message: "Success!" });
+	} catch (err) {
+		res.status(500).json({ message: "Deleting Post failed." });
+	}
 };
 
-exports.updatePost = (req, res, next) => {
+exports.updatePost = async (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		// Delete uploaded image incase of validation error
@@ -132,38 +120,36 @@ exports.updatePost = (req, res, next) => {
 		throw error;
 	}
 
-	Post.findByPk(postId)
-		.then((post) => {
-			if (!post) {
-				const error = new Error("Could not find post.");
-				error.statusCode = 404;
-				throw error;
-			}
-			// Check if the post is created by the logged in user or not
-			if (post.userId !== req.userId) {
-				console.log("you are not authorized!");
-				const error = new Error("Not Authorized");
-				error.statusCode = 404;
-				throw error;
-			}
+	try {
+		const post = await Post.findByPk(postId);
+		if (!post) {
+			const error = new Error("Could not find post.");
+			error.statusCode = 404;
+			throw error;
+		}
+		// Check if the post is created by the logged in user or not
+		if (post.userId !== req.userId) {
+			console.log("you are not authorized!");
+			const error = new Error("Not Authorized");
+			error.statusCode = 404;
+			throw error;
+		}
 
-			if (imageUrl !== post.imageUrl) {
-				clearImage(post.imageUrl);
-			}
-			post.title = title;
-			post.imageUrl = imageUrl;
-			post.content = content;
+		if (imageUrl !== post.imageUrl) {
+			clearImage(post.imageUrl);
+		}
+		post.title = title;
+		post.imageUrl = imageUrl;
+		post.content = content;
 
-			return post.save().then((result) => {
-				res.status(200).json({ message: "post Updated successfully", post: result });
-			});
-		})
-		.catch((err) => {
-			if (!err.statusCode) {
-				err.statusCode = 500;
-			}
-			next(err);
-		});
+		const result = await post.save();
+		res.status(200).json({ message: "post Updated successfully", post: result });
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
 };
 
 // Deleting image when deleting post or editing

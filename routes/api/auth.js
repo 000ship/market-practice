@@ -13,14 +13,13 @@ router.put(
 		body("email")
 			.isEmail()
 			.withMessage("Please enter a valid email number.")
-			.custom((value, { req }) => {
-				return User.findOne({
+			.custom(async (value, { req }) => {
+				const userDoc = await User.findOne({
 					where: { email: value },
-				}).then((userDoc) => {
-					if (userDoc) {
-						return Promise.reject("E-mail already exists; please pick another one.");
-					}
 				});
+				if (userDoc) {
+					return Promise.reject("E-mail already exists; please pick another one.");
+				}
 			}),
 		body("password", "password length should be at least, 6 characters.")
 			.isLength({ min: 6 })
