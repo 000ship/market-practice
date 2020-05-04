@@ -27,9 +27,8 @@
 }
 
 .news-container {
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	padding: 70px;
-	margin-top: 100px;
+	grid-template-columns: 1fr 1fr 1fr;
+	padding: 50px;
 }
 
 .article-header {
