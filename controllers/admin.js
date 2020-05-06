@@ -7,3 +7,7 @@ exports.getIndex = (req, res, next) => {
 exports.getPosts = (req, res, next) => {
 	res.render("admin/posts");
 };
+
+exports.getUserInfo = (req, res, next) => {
+	res.render("admin/userInfo");
+};
