@@ -61,3 +61,19 @@ exports.login = async (req, res, next) => {
 		next(err);
 	}
 };
+
+exports.getStatus = async (req, res, next) => {
+	const token = req.get("Authorization").split(" ")[1];
+	let decodedToken = jwt.verify(token, "somesupersecret");
+	// if didn't verify the token
+	if (!decodedToken) {
+		const error = new Error("Not Authenticated");
+		error.statusCode = 401;
+		throw error;
+	}
+	const user = User.findByPk(decodedToken.userId);
+	res.status(200).json({
+		imageUrl: user.imageUrl,
+		isValid: !Date.now() >= decodedToken.exp * 1000,
+	});
+};

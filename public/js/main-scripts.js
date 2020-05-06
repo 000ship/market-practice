@@ -1,9 +1,23 @@
 $(function () {
+	let isloggedin = false;
 	// Update navbar profile pic & buttons if there's a logged in user
 	if (localStorage.getItem("token")) {
-		$("#registerBtn").text("Logout");
-		$("#main-img-author").attr("src", "images/author.jpg");
-		$("#admin-img-author").attr("src", "../../../images/author.jpg");
+		$.ajax({
+			url: "http://localhost:3000/auth/getStatus",
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
+			success: function (data) {
+				$("#registerBtn").text("Logout");
+				$("#registerBtn").removeAttr("href");
+				$("#main-img-author").attr("src", "images/author.jpg");
+				$("#main-img-author-link").attr("href", "/admin");
+				isloggedin = true;
+				// $("#admin-img-author").attr("src", "../../../images/author.jpg");
+				// $("#main-img-author").attr("src", data.imageUrl);
+				// $("#admin-img-author").attr("src", "../../../" + data.imageUrl);
+			},
+		});
 	}
 
 	var login_validate = $("#loginForm").validate();
@@ -71,9 +85,15 @@ $(function () {
 
 	// Clicking on Login-in - Sign-up Button
 	$("#registerBtn").on("click", function () {
-		login_validate.resetForm();
-		signup_validate.resetForm();
-		$("#loginForm")[0].trigger("reset");
-		$("#signupForm")[0].trigger("reset");
+		if (isloggedin) {
+			// Log out
+			localStorage.removeItem("token");
+			location.href = "/";
+		} else {
+			login_validate.resetForm();
+			signup_validate.resetForm();
+			$("#loginForm")[0].trigger("reset");
+			$("#signupForm")[0].trigger("reset");
+		}
 	});
 });

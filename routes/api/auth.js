@@ -40,4 +40,6 @@ router.put(
 
 router.post("/login", apiAuthController.login);
 
+router.get("/getStatus", apiAuthController.getStatus);
+
 module.exports = router;
