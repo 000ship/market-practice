@@ -1,4 +1,11 @@
 $(function () {
+	// Update navbar profile pic & buttons if there's a logged in user
+	if (localStorage.getItem("token")) {
+		$("#registerBtn").text("Logout");
+		$("#main-img-author").attr("src", "images/author.jpg");
+		$("#admin-img-author").attr("src", "../../../images/author.jpg");
+	}
+
 	var login_validate = $("#loginForm").validate();
 	var signup_validate = $("#signupForm").validate({
 		rules: {
@@ -56,9 +63,6 @@ $(function () {
 				success: function (result) {
 					console.log(result);
 					localStorage.setItem("token", result.token);
-					$("#registerBtn").text("Logout");
-					$("#main-img-author").attr("src", "images/author.jpg");
-					$("#admin-img-author").attr("src", "../../../images/author.jpg");
 					location.href = "/";
 				},
 			});
