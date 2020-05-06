@@ -2,18 +2,26 @@ $(function () {
 	var button = null;
 	var validator = $("#postForm").validate();
 	var form = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
+	let isloggedin = false;
 
 	// Update navbar profile pic & Text
-	$.ajax({
-		url: "http://localhost:3000/auth/getStatus",
-		headers: {
-			Authorization: "bearer " + localStorage.getItem("token"),
-		},
-		success: function (data) {
-			$("#admin-img-author").attr("src", "../../../images/author.jpg");
-			// $("#admin-img-author").attr("src", "../../../" + data.imageUrl);
-		},
-	});
+	if (localStorage.getItem("token")) {
+		$.ajax({
+			url: "http://localhost:3000/auth/getStatus",
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
+			success: function (data) {
+				if (data.isValid) {
+					isloggedin = true;
+					$("#admin-img-author").attr("src", "../../../" + data.imageUrl);
+				}
+			},
+		});
+	} else {
+		this.location.href = "/";
+	}
+
 	////////////////////////////////////////
 	///////////// POST /////////////////////
 	////////////////////////////////////////

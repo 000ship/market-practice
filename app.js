@@ -72,7 +72,7 @@ Post.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Post);
 
 // sequelize
-// 	.sync({ force: true })
+// .sync({ force: true })
 sequelize
 	.sync()
 	.then((result) => {

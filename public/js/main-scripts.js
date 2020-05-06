@@ -8,14 +8,14 @@ $(function () {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},
 			success: function (data) {
-				$("#registerBtn").text("Logout");
-				$("#registerBtn").removeAttr("href");
-				$("#main-img-author").attr("src", "images/author.jpg");
-				$("#main-img-author-link").attr("href", "/admin");
-				isloggedin = true;
-				// $("#admin-img-author").attr("src", "../../../images/author.jpg");
-				// $("#main-img-author").attr("src", data.imageUrl);
-				// $("#admin-img-author").attr("src", "../../../" + data.imageUrl);
+				console.log(data);
+				if (data.isValid) {
+					$("#registerBtn").text("Logout");
+					$("#registerBtn").removeAttr("href");
+					$("#main-img-author").attr("src", data.imageUrl);
+					$("#main-img-author-link").attr("href", "/admin");
+					isloggedin = true;
+				}
 			},
 		});
 	}

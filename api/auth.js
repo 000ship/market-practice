@@ -18,6 +18,7 @@ exports.signup = async (req, res, next) => {
 		const user = new User({
 			email: email,
 			password: hashedPW,
+			imageUrl: "images/default-profile-pic.jpg",
 		});
 		const result = await user.save();
 		res.status(201).json({ message: "user created!", userId: result.id });
@@ -71,9 +72,11 @@ exports.getStatus = async (req, res, next) => {
 		error.statusCode = 401;
 		throw error;
 	}
-	const user = User.findByPk(decodedToken.userId);
+
+	const user = await User.findByPk(decodedToken.userId);
 	res.status(200).json({
+		message: "fetched succesfully!",
 		imageUrl: user.imageUrl,
-		isValid: !Date.now() >= decodedToken.exp * 1000,
+		isValid: Date.now() <= decodedToken.exp * 1000,
 	});
 };
