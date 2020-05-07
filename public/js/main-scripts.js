@@ -48,7 +48,6 @@ $(function () {
 		var formData = new FormData(form);
 
 		if ($("#signupForm").valid()) {
-			console.log("it is valid!");
 			$.ajax({
 				url: "http://localhost:3000/auth/signup",
 				type: "PUT",
@@ -83,6 +82,11 @@ $(function () {
 					console.log(result);
 					localStorage.setItem("token", result.token);
 					location.href = "/";
+				},
+				error: function (xhr) {
+					const error = xhr.responseJSON;
+					$("#register-message").text(error.message);
+					$("#register-message").addClass("alert alert-danger");
 				},
 			});
 		}
