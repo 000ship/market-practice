@@ -4,16 +4,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res, next) => {
-	const errors = validationResult(req);
-	if (!errors.isEmpty()) {
-		const error = new Error("Validation failed; entered data is incorrect.");
-		error.statusCode = 422;
-		error.data = errors.array();
-		throw error;
-	}
-	const email = req.body.email;
-	const password = req.body.password;
 	try {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const error = new Error("Validation failed; entered data is incorrect.");
+			error.statusCode = 422;
+			error.data = errors.array();
+			throw error;
+		}
+		const email = req.body.email;
+		const password = req.body.password;
 		const hashedPW = await bcrypt.hash(password, 12);
 		const user = new User({
 			email: email,
@@ -31,12 +31,12 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-	const email = req.body.email;
-	const password = req.body.password;
-	let loadedUser;
-
-	// check if the user exists
 	try {
+		const email = req.body.email;
+		const password = req.body.password;
+		let loadedUser;
+
+		// check if the user exists
 		const user = await User.findOne({ where: { email: email } });
 		if (!user) {
 			const error = new Error("A user with this email could not be found!");
@@ -64,19 +64,26 @@ exports.login = async (req, res, next) => {
 };
 
 exports.getStatus = async (req, res, next) => {
-	const token = req.get("Authorization").split(" ")[1];
-	let decodedToken = jwt.verify(token, "somesupersecret");
-	// if didn't verify the token
-	if (!decodedToken) {
-		const error = new Error("Not Authenticated");
-		error.statusCode = 401;
-		throw error;
-	}
+	try {
+		const token = req.get("Authorization").split(" ")[1];
+		let decodedToken = jwt.verify(token, "somesupersecret");
+		// if didn't verify the token
+		if (!decodedToken) {
+			const error = new Error("Not Authenticated");
+			error.statusCode = 401;
+			throw error;
+		}
 
-	const user = await User.findByPk(decodedToken.userId);
-	res.status(200).json({
-		message: "fetched succesfully!",
-		imageUrl: user.imageUrl,
-		isValid: Date.now() <= decodedToken.exp * 1000,
-	});
+		const user = await User.findByPk(decodedToken.userId);
+		res.status(200).json({
+			message: "fetched succesfully!",
+			imageUrl: user.imageUrl,
+			isValid: Date.now() <= decodedToken.exp * 1000,
+		});
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
 };
