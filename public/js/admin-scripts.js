@@ -117,7 +117,11 @@ $(function () {
 					// data: new FormData(form),
 					success: function () {
 						table.ajax.reload();
-						console.log("Edited successfully!");
+						alertify.success("Post Updated Successfully");
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON;
+						alertify.error(error.message);
 					},
 				});
 			} else {
@@ -136,7 +140,11 @@ $(function () {
 					// data: new FormData(form),
 					success: function () {
 						table.ajax.reload();
-						console.log("added successfully!");
+						alertify.success("Post Added Successfully.");
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON;
+						alertify.error(error.message);
 					},
 				});
 			}
@@ -148,16 +156,22 @@ $(function () {
 	//Deleting a post
 	$("#postTable").on("click", "#deletePost", function () {
 		var button = $(this);
-		$.ajax({
-			url: "http://localhost:3000/post/" + button.attr("data-post-id"),
-			method: "DELETE",
-			headers: {
-				Authorization: "bearer " + localStorage.getItem("token"),
-			},
-			success: function () {
-				table.row(button.parents("tr")).remove().draw();
-				console.log("success");
-			},
+		alertify.confirm("Are you sure, you want to delete this post?", function () {
+			$.ajax({
+				url: "http://localhost:3000/post/" + button.attr("data-post-id"),
+				method: "DELETE",
+				headers: {
+					Authorization: "bearer " + localStorage.getItem("token"),
+				},
+				success: function () {
+					table.row(button.parents("tr")).remove().draw();
+					alertify.success("Post Deleted Successfully.");
+				},
+				error: function (xhr) {
+					const error = xhr.responseJSON;
+					alertify.error(error.message);
+				},
+			});
 		});
 	});
 
@@ -177,6 +191,10 @@ $(function () {
 				$("#oldImage").val(data.imageUrl);
 				$("#formPostBtn").text("Update");
 				$("#formPostTitle").text("Edit");
+			},
+			error: function (xhr) {
+				const error = xhr.responseJSON;
+				alertify.error(error.message);
 			},
 		});
 		$("#open-post-modal").modal();
@@ -217,8 +235,12 @@ $(function () {
 			cache: false,
 			data: formData,
 			success: function () {
-				console.log("Updated successfully!");
+				alertify.success("User Info updated Successfully.");
 				updateNavbar();
+			},
+			error: function (xhr) {
+				const error = xhr.responseJSON;
+				alertify.error(error.message);
 			},
 		});
 	});

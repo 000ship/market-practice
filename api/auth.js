@@ -94,7 +94,6 @@ exports.getStatus = async (req, res, next) => {
 
 exports.updateUserInfo = async (req, res, next) => {
 	try {
-		console.log("it is the server ------");
 		const userId = req.params.userId;
 		const user = await User.findByPk(userId);
 		const name = req.body.name;
@@ -135,9 +134,7 @@ exports.updateUserInfo = async (req, res, next) => {
 
 exports.getUserInfo = async (req, res, next) => {
 	try {
-		console.log("----------- SERVER");
 		const userId = req.params.userId;
-		console.log(userId);
 		const user = await User.findByPk(userId);
 		if (!user) {
 			const error = new Error("User Not Found!");

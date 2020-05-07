@@ -8,7 +8,6 @@ $(function () {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},
 			success: function (data) {
-				console.log(data);
 				if (data.isValid) {
 					$("#registerBtn").text("Logout");
 					$("#registerBtn").removeAttr("href");
@@ -56,6 +55,7 @@ $(function () {
 				data: formData,
 				success: function (result) {
 					console.log(result);
+					alertify.success("You have Registered successfully. Please confirm your E-mail.");
 				},
 				error: function (xhr) {
 					const error = xhr.responseJSON.data[0];
