@@ -5,6 +5,8 @@ const User = require("../../models/user");
 
 const apiAuthController = require("../../api/auth");
 
+const isAuth = require("../../middleware/is-auth");
+
 const router = express.Router();
 
 router.put(
@@ -41,5 +43,7 @@ router.put(
 router.post("/login", apiAuthController.login);
 
 router.get("/getStatus", apiAuthController.getStatus);
+router.put("/updateUserInfo/:userId", isAuth, apiAuthController.updateUserInfo);
+router.get("/getUserInfo/:userId", isAuth, apiAuthController.getUserInfo);
 
 module.exports = router;

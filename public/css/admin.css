@@ -26,6 +26,13 @@
 	width: 100%;
 }
 
+.menu-item a button {
+	background-color: transparent;
+	border: none;
+	width: 100%;
+	text-align: left;
+}
+
 .menu-item-icon {
 	text-align: left;
 	height: 70px;

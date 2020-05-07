@@ -2,24 +2,42 @@ $(function () {
 	var button = null;
 	var validator = $("#postForm").validate();
 	var form = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
-	let isloggedin = false;
+	let userId = null;
+	updateNavbar();
 
 	// Update navbar profile pic & Text
-	if (localStorage.getItem("token")) {
-		$.ajax({
-			url: "http://localhost:3000/auth/getStatus",
-			headers: {
-				Authorization: "bearer " + localStorage.getItem("token"),
-			},
-			success: function (data) {
-				if (data.isValid) {
-					isloggedin = true;
-					$("#admin-img-author").attr("src", "../../../" + data.imageUrl);
-				}
-			},
-		});
-	} else {
-		this.location.href = "/";
+	function updateNavbar() {
+		if (localStorage.getItem("token")) {
+			$.ajax({
+				url: "http://localhost:3000/auth/getStatus",
+				headers: {
+					Authorization: "bearer " + localStorage.getItem("token"),
+				},
+				success: function (data) {
+					if (data.isValid) {
+						userId = data.userId;
+						$("#admin-img-author").attr("src", "../../../" + data.imageUrl);
+						if (data.name) {
+							$("#memberName").text(data.name);
+						}
+						// populate user info form
+						$.ajax({
+							url: "http://localhost:3000/auth/getUserInfo/" + userId,
+							headers: {
+								Authorization: "bearer " + localStorage.getItem("token"),
+							},
+							success: function (data) {
+								$("#user-email-input").text(data.email);
+								$("#user-name-input").val(data.name);
+								$("#user-imageUrl-input").val("");
+							},
+						});
+					}
+				},
+			});
+		} else {
+			this.location.href = "/";
+		}
 	}
 
 	////////////////////////////////////////
@@ -182,5 +200,26 @@ $(function () {
 	$("#admin-logout").on("click", function () {
 		localStorage.removeItem("token");
 		location.href = "/";
+	});
+
+	// Updating User Info
+	$("#user-info-update").on("click", function () {
+		var formData = new FormData($("#user-info-form")[0]);
+		console.log(formData);
+		$.ajax({
+			url: "http://localhost:3000/auth/updateUserInfo/" + userId,
+			type: "put",
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
+			contentType: false,
+			processData: false, //important
+			cache: false,
+			data: formData,
+			success: function () {
+				console.log("Updated successfully!");
+				updateNavbar();
+			},
+		});
 	});
 });

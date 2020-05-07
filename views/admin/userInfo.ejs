@@ -24,32 +24,37 @@
 					<div class="row">
 						<div class="main-panel">
 							<!-- page Content -->
-							<form class="form-horizontal">
+							<form class="form-horizontal" id="user-info-form" enctype="multipart/form-data">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">E-mail</label>
 									<div class="col-sm-10">
-										<h4 class="form-control" name="email">niamileo@gmail.com</h4>
+										<h4 id="user-email-input" class="form-control" name="email"></h4>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Name</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" name="email" />
+										<input id="user-name-input" type="text" class="form-control" name="name" />
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Profile Picture</label>
 									<div class="col-sm-10">
-										<input type="file" class="form-control-file" />
+										<input
+											id="user-imageUrl-input"
+											name="image"
+											type="file"
+											class="form-control-file"
+										/>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
 										<div class="col-sm-offset-2 col-sm-1">
-											<button type="submit" class="btn btn-warning">Update</button>
+											<a id="user-info-update" class="btn btn-warning">Update</a>
 										</div>
 										<div class="col-sm-2">
-											<button type="submit" class="btn btn-info">Change Password</button>
+											<a class="btn btn-info">Change Password</a>
 										</div>
 									</div>
 								</div>
