@@ -59,8 +59,7 @@ $(function () {
 				},
 				error: function (xhr) {
 					const error = xhr.responseJSON.data[0];
-					$("#register-message").text(error.msg);
-					$("#register-message").addClass("alert alert-danger");
+					alertify.error(error.msg);
 				},
 			});
 		}
@@ -85,8 +84,7 @@ $(function () {
 				},
 				error: function (xhr) {
 					const error = xhr.responseJSON;
-					$("#register-message").text(error.message);
-					$("#register-message").addClass("alert alert-danger");
+					alertify.error(error.message);
 				},
 			});
 		}

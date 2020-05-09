@@ -68,6 +68,11 @@ exports.login = async (req, res, next) => {
 			error.statusCode = 401;
 			throw error;
 		}
+		if (user.status === false) {
+			const error = new Error("Your account is not activated yet. Please confirm your E-mail.");
+			error.statusCode = 401;
+			throw error;
+		}
 		const token = jwt.sign({ email: loadedUser.email, userId: loadedUser.id }, "somesupersecret", {
 			expiresIn: 60000,
 		});
