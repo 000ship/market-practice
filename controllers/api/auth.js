@@ -4,6 +4,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+
+const transport = nodemailer.createTransport({
+	service: "gmail",
+	auth: {
+		user: "niamileo@gmail.com",
+		pass: "23472875",
+	},
+});
 
 exports.signup = async (req, res, next) => {
 	try {
@@ -17,12 +27,17 @@ exports.signup = async (req, res, next) => {
 		const email = req.body.email;
 		const password = req.body.password;
 		const hashedPW = await bcrypt.hash(password, 12);
+		const token = crypto.randomBytes(32).toString();
 		const user = new User({
 			email: email,
 			password: hashedPW,
 			imageUrl: "images/default-profile-pic.jpg",
+			emailToken: token,
+			emailTokenExpiration: Date.now() + 3600000,
 		});
 		const result = await user.save();
+
+		sendEmail(email, token);
 		res.status(201).json({ message: "user created!", userId: result.id });
 	} catch (err) {
 		if (!err.statusCode) {
@@ -150,8 +165,54 @@ exports.getUserInfo = async (req, res, next) => {
 	}
 };
 
+exports.sendConfirmEmail = async (req, res, next) => {
+	try {
+		const email = req.body.email;
+		if (!email) {
+			const error = new Error("Please enter your E-mail Address");
+			error.statusCode = 401;
+			throw error;
+		}
+		let user = await User.findOne({
+			where: {
+				email: email,
+			},
+		});
+		if (!user) {
+			const error = new Error("A user with this email could not be found!");
+			error.statusCode = 401;
+			throw error;
+		}
+		// If Everything was fine, continue ...
+		const token = crypto.randomBytes(32).toString("hex");
+		user.emailToken = token;
+		user.emailTokenExpiration = Date.now() + 3600000;
+		const result = await user.save();
+		sendEmail(email, token);
+		res.status(200).json({ message: "E-mail Sent!" });
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
+};
+
 // Deleting image when deleting editing
 const clearImage = (filePath) => {
 	filePath = path.join(__dirname, "..", filePath);
 	fs.unlink(filePath, (err) => console.log(err));
+};
+
+// Sending Email
+const sendEmail = (to, token) => {
+	transport.sendMail({
+		to: to,
+		from: "niamileo@gmail.com",
+		subject: "Account Activation",
+		html: `
+		<h1>Congradulations ...</h1>
+		<p>Click this <a href="http://localhost:3000/confirmEmail/${token}">Link</a> to confirm your email address.</p>
+		`,
+	});
 };

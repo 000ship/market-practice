@@ -3,6 +3,7 @@ const sequelize = require("./util/database");
 const bodyParser = require("body-parser");
 const path = require("path");
 const multer = require("multer");
+// const flash = require("connect-flash");
 
 const Post = require("./models/post");
 const User = require("./models/user");
@@ -39,6 +40,7 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 app.set("view engine", "ejs");
 app.set("views", "views");
 
+// app.use(flash());
 // View routes
 const adminRoutes = require("./routes/admin");
 const homeRoutes = require("./routes/home");

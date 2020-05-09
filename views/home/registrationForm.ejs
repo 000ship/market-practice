@@ -9,13 +9,22 @@
 
 		<!-- Page Content -->
 		<div class="form-container">
-			<img src="images/front-cover-3.jpg" class="img-responsive img-form" alt="" />
+			<img src="/images/front-cover-3.jpg" class="img-responsive img-form" alt="" />
 
 			<div class="row">
 				<!-- Main Content -->
 				<div class="col-lg-6 offset-lg-3 register-form">
 					<!-- Alert -->
-					<div id="register-message"></div>
+					<% if(errorMessage){ %>
+					<div class="row" style="margin: 5px; padding: 13px 15px 0px 15px;">
+						<div class="alert <%= type === 'success' ? 'alert-success' : 'alert-danger' %>">
+							<%= errorMessage %>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</div>
+					<% } %>
 					<!-- End Alert -->
 					<ul class="nav nav-tabs nav-justified">
 						<li class="active"><a data-toggle="tab" href="#menu1">Signup</a></li>
@@ -38,5 +47,10 @@
 
 		<!-- Scripts -->
 		<%- include('../includes/end.ejs') %>
+		<script>
+			if (msg) {
+				alertify.success(msg);
+			}
+		</script>
 	</body>
 </html>

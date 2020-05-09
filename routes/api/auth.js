@@ -45,5 +45,6 @@ router.post("/login", apiAuthController.login);
 router.get("/getStatus", apiAuthController.getStatus);
 router.put("/updateUserInfo/:userId", isAuth, apiAuthController.updateUserInfo);
 router.get("/getUserInfo/:userId", isAuth, apiAuthController.getUserInfo);
+router.put("/sendConfirmEmail", apiAuthController.sendConfirmEmail);
 
 module.exports = router;

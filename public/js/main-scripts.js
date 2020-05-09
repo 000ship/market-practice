@@ -105,4 +105,35 @@ $(function () {
 			$("#signupForm")[0].trigger("reset");
 		}
 	});
+
+	// Clicking on 'Send Confirmation Email' Button
+	$("#email-modal-btn").on("click", function () {
+		// alertify.error("Please enter your E-mail Address.");
+		alertify.prompt(
+			"Send Confirmation E-mail",
+			"Please Enter Your E-mail Address.",
+			"",
+			function (event, value) {
+				var data = new FormData();
+				data.append("email", value);
+				$.ajax({
+					url: "http://localhost:3000/auth/sendConfirmEmail",
+					type: "PUT",
+					processData: false,
+					contentType: false,
+					data: data,
+					success: function (result) {
+						alertify.success("Email Sent.");
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON;
+						alertify.error(error.message);
+					},
+				});
+			},
+			function (error) {
+				alertify.error("cancelled.");
+			}
+		);
+	});
 });

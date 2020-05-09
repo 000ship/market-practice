@@ -16,9 +16,25 @@ const User = sequelize.define("user", {
 		type: Sequelize.STRING,
 		allowNull: false,
 	},
+	emailToken: {
+		type: Sequelize.STRING,
+		allowNull: false,
+	},
+	emailTokenExpiration: {
+		type: Sequelize.DATE,
+		allowNull: false,
+	},
 	password: {
 		type: Sequelize.STRING,
 		allowNull: false,
+	},
+	passwordToken: {
+		type: Sequelize.STRING,
+		allowNull: true,
+	},
+	passwordTokenExpiration: {
+		type: Sequelize.DATE,
+		allowNull: true,
 	},
 	imageUrl: {
 		type: Sequelize.STRING,
