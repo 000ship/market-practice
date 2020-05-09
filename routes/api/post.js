@@ -1,7 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 
-const apiController = require("../../api/post");
+const apiController = require("../../controllers/api/post");
 
 const isAuth = require("../../middleware/is-auth");
 

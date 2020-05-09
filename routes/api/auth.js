@@ -3,7 +3,7 @@ const { body } = require("express-validator");
 
 const User = require("../../models/user");
 
-const apiAuthController = require("../../api/auth");
+const apiAuthController = require("../../controllers/api/auth");
 
 const isAuth = require("../../middleware/is-auth");
 
