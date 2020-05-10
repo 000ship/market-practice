@@ -46,5 +46,25 @@ router.get("/getStatus", apiAuthController.getStatus);
 router.put("/updateUserInfo/:userId", isAuth, apiAuthController.updateUserInfo);
 router.get("/getUserInfo/:userId", isAuth, apiAuthController.getUserInfo);
 router.put("/sendConfirmEmail", apiAuthController.sendConfirmEmail);
+router.put("/sendPasswordEmail", apiAuthController.sendPasswordEmail);
+router.put(
+	"/recoverPassword",
+	[
+		body("password", "password length should be at least, 6 characters.")
+			.isLength({ min: 6 })
+			.trim()
+			.not()
+			.isEmpty(),
+		body("passwordRepeat")
+			.trim()
+			.custom((value, { req }) => {
+				if (value !== req.body.password) {
+					throw new Error("Passwords have to match");
+				}
+				return true;
+			}),
+	],
+	apiAuthController.recoverPassword
+);
 
 module.exports = router;

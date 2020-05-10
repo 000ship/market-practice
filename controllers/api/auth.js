@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
 		const email = req.body.email;
 		const password = req.body.password;
 		const hashedPW = await bcrypt.hash(password, 12);
-		const token = crypto.randomBytes(32).toString();
+		const token = crypto.randomBytes(32).toString("hex");
 		const user = new User({
 			email: email,
 			password: hashedPW,
@@ -37,8 +37,11 @@ exports.signup = async (req, res, next) => {
 		});
 		const result = await user.save();
 
-		sendEmail(email, token);
-		res.status(201).json({ message: "user created!", userId: result.id });
+		sendEmail(email, token, "activate");
+		res.status(201).json({
+			message: "You signed up Successfully. Please confirm your E-mail address.",
+			userId: result.id,
+		});
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -193,8 +196,8 @@ exports.sendConfirmEmail = async (req, res, next) => {
 		user.emailToken = token;
 		user.emailTokenExpiration = Date.now() + 3600000;
 		const result = await user.save();
-		sendEmail(email, token);
-		res.status(200).json({ message: "E-mail Sent!" });
+		sendEmail(email, token, "activate");
+		res.status(200).json({ message: "Confirmation E-mail Sent! Please check your Inbox." });
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -203,6 +206,62 @@ exports.sendConfirmEmail = async (req, res, next) => {
 	}
 };
 
+exports.sendPasswordEmail = async (req, res, next) => {
+	try {
+		const email = req.body.email;
+		if (!email) {
+			const error = new Error("Please enter your E-mail Address");
+			error.statusCode = 401;
+			throw error;
+		}
+		let user = await User.findOne({
+			where: {
+				email: email,
+			},
+		});
+		if (!user) {
+			const error = new Error("A user with this email could not be found!");
+			error.statusCode = 401;
+			throw error;
+		}
+		// If Everything was fine, continue ...
+		const token = crypto.randomBytes(32).toString("hex");
+		user.passwordToken = token;
+		user.passwordTokenExpiration = Date.now() + 3600000;
+		const result = await user.save();
+		sendEmail(email, token, "recover");
+		res.status(200).json({ message: "Password Recovery E-mail Sent!" });
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
+};
+
+exports.recoverPassword = async (req, res, next) => {
+	try {
+		const userId = await req.body.id;
+
+		let user = await User.findByPk(userId);
+		if (!user) {
+			const error = new Error("No User Found!");
+			error.statusCode = 401;
+			throw error;
+		}
+		const newPassword = req.body.password;
+		const hashedPW = await bcrypt.hash(newPassword, 12);
+
+		user.password = hashedPW;
+		const result = await user.save();
+
+		res.status(200).json({ message: "Password Updated Successfully", userId: result.id });
+	} catch (err) {
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
+};
 // Deleting image when deleting editing
 const clearImage = (filePath) => {
 	filePath = path.join(__dirname, "..", filePath);
@@ -210,14 +269,27 @@ const clearImage = (filePath) => {
 };
 
 // Sending Email
-const sendEmail = (to, token) => {
+const sendEmail = (to, token, method) => {
+	let subject, html;
+
+	if (method === "activate") {
+		subject = "Account Confirmation";
+		html = `
+		<h1>Congradulations ...</h1>
+		<p>Click this <a href="http://localhost:3000/confirmEmail/${token}">Link</a> to confirm your email address.</p>
+		`;
+	} else if (method === "recover") {
+		subject = "Password Recovery";
+		html = `
+		<h1>Forgot your password!? No Problem .....</h1>
+		<p>Just click this <a href="http://localhost:3000/recoverPassword/${token}">Link</a> to get a new one.</p>
+		`;
+	}
+
 	transport.sendMail({
 		to: to,
 		from: "niamileo@gmail.com",
-		subject: "Account Activation",
-		html: `
-		<h1>Congradulations ...</h1>
-		<p>Click this <a href="http://localhost:3000/confirmEmail/${token}">Link</a> to confirm your email address.</p>
-		`,
+		subject: subject,
+		html: html,
 	});
 };
