@@ -244,4 +244,35 @@ $(function () {
 			},
 		});
 	});
+
+	// Clicking on Change Password in Admin Panel
+	$("#admin-change-password").on("click", function () {
+		alertify.prompt(
+			"Change Password",
+			"Please Enter Your New Password.",
+			"",
+			function (event, value) {
+				var data = new FormData();
+				data.append("id", userId);
+				data.append("password", value);
+				$.ajax({
+					url: "http://localhost:3000/auth/recoverPassword",
+					type: "PUT",
+					processData: false,
+					contentType: false,
+					data: data,
+					success: function (xhr) {
+						alertify.success(xhr.message);
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON;
+						alertify.error(error.message);
+					},
+				});
+			},
+			function (err) {
+				alertify.error("Looks like you have remembered your password.");
+			}
+		);
+	});
 });
