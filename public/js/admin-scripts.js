@@ -1,7 +1,10 @@
 $(function () {
-	var button = null;
-	var validator = $("#postForm").validate();
-	var form = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
+	var postButton = null;
+	var productButton = null;
+	var postValidator = $("#postForm").validate();
+	var productValidator = $("#productForm").validate();
+	var postForm = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
+	var productForm = $("#productForm")[0]; // this [0] Is super important (took about 3 days to figure out)
 	let userId = null;
 	updateNavbar();
 
@@ -97,14 +100,14 @@ $(function () {
 	// Add new Post or Edit Existing Post
 	$("#formPostBtn").on("click", function (e) {
 		e.preventDefault();
-		var formData = new FormData(form);
+		var formData = new FormData(postForm);
 		var saveBtn = $("#formPostBtn");
 		if ($("#postForm").valid()) {
 			saveBtn.attr("rel", "modal:close");
-			if (button) {
+			if (postButton) {
 				// edit
 				$.ajax({
-					url: "http://localhost:3000/post/" + button.attr("data-post-id"),
+					url: "http://localhost:3000/post/" + postButton.attr("data-post-id"),
 					type: "put",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
@@ -177,12 +180,12 @@ $(function () {
 
 	//Open Modal for Editing a Post
 	$("#postTable").on("click", "#editPost", function () {
-		button = $(this);
+		postButton = $(this);
 		$.ajax({
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},
-			url: "http://localhost:3000/post/" + button.attr("data-post-id"),
+			url: "http://localhost:3000/post/" + postButton.attr("data-post-id"),
 			success: function (data) {
 				$("#post-title-input").val(data.title);
 				$("#post-content-input").val(data.content);
@@ -203,8 +206,8 @@ $(function () {
 	// Open Modal for adding new Post
 	$("#open-post-modal").on("click", function (event) {
 		event.preventDefault();
-		button = null;
-		validator.resetForm();
+		postButton = null;
+		postValidator.resetForm();
 		$("#post-title-input").val("");
 		$("#post-content-input").val("");
 		$("#post-imageUrl-input").val("");
@@ -213,6 +216,191 @@ $(function () {
 
 		$("#open-post-modal").modal();
 	});
+
+	/////////////////////////////////////////
+	///////////// PRODUCT //////////////////
+	///////////////////////////////////////
+
+	// Populating Product Table
+	var productTable = $("#productTable").DataTable({
+		ajax: {
+			url: "http://localhost:3000/products",
+			dataSrc: "",
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
+		},
+		columns: [
+			{
+				data: "id",
+			},
+			{
+				data: "imageUrl",
+				render: function (data) {
+					return (
+						"<img class='img-rounded img-responsive' src='" +
+						"http://localhost:3000/" +
+						data +
+						"'/>"
+					);
+				},
+			},
+			{
+				data: "title",
+			},
+			{
+				data: "content",
+			},
+			{
+				data: "price",
+			},
+			{
+				data: "id",
+				render: function (data) {
+					return (
+						"<button class='btn btn-default' id='editProduct' data-product-id=" +
+						data +
+						">Edit</button>"
+					);
+				},
+			},
+			{
+				data: "id",
+				render: function (data) {
+					return (
+						"<button class='btn btn-danger' id='deleteProduct' data-product-id=" +
+						data +
+						">Delete</button>"
+					);
+				},
+			},
+		],
+	});
+
+	// Open Modal for adding new Product
+	$("#open-product-modal").on("click", function (event) {
+		event.preventDefault();
+		productButton = null;
+		productValidator.resetForm();
+		$("#product-title-input").val("");
+		$("#product-content-input").val("");
+		$("#product-imageUrl-input").val("");
+		$("#product-price-input").val("");
+		$("#formProductBtn").text("Add Product");
+		$("#formProductTitle").text("Insert");
+
+		$("#open-product-modal").modal();
+	});
+
+	//Open Modal for Editing a Product
+	$("#productTable").on("click", "#editProduct", function () {
+		productButton = $(this);
+		$.ajax({
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
+			url: "http://localhost:3000/product/" + productButton.attr("data-product-id"),
+			success: function (data) {
+				$("#product-title-input").val(data.title);
+				$("#product-content-input").val(data.content);
+				$("#product-price-input").val(data.price);
+				$("#product-imageUrl-input").val("");
+				$("#product-imageUrl-input").removeAttr("required");
+				$("#oldImage").val(data.imageUrl);
+				$("#formProductBtn").text("Update");
+				$("#formProductTitle").text("Edit");
+			},
+			error: function (xhr) {
+				const error = xhr.responseJSON;
+				alertify.error(error.message);
+			},
+		});
+		$("#open-product-modal").modal();
+	});
+
+	// Add new Post or Edit Existing Product
+	$("#formProductBtn").on("click", function (e) {
+		e.preventDefault();
+		var formData = new FormData(productForm);
+		var saveBtn = $("#formProductBtn");
+		if ($("#productForm").valid()) {
+			saveBtn.attr("rel", "modal:close");
+			if (productButton) {
+				// edit
+				$.ajax({
+					url: "http://localhost:3000/product/" + productButton.attr("data-product-id"),
+					type: "put",
+					headers: {
+						Authorization: "bearer " + localStorage.getItem("token"),
+					},
+					enctype: "multipart/form-data",
+					contentType: false,
+					processData: false, //important
+					cache: false,
+					data: formData,
+					// data: new FormData(form),
+					success: function (xhr) {
+						productTable.ajax.reload();
+						alertify.success(xhr.message);
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON;
+						alertify.error(error.message);
+					},
+				});
+			} else {
+				// add
+				$.ajax({
+					url: "http://localhost:3000/product",
+					type: "post",
+					headers: {
+						Authorization: "bearer " + localStorage.getItem("token"),
+					},
+					enctype: "multipart/form-data",
+					contentType: false,
+					processData: false, //important
+					cache: false,
+					data: formData,
+					// data: new FormData(form),
+					success: function (xhr) {
+						productTable.ajax.reload();
+						alertify.success(xhr.message);
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON;
+						alertify.error(error.message);
+					},
+				});
+			}
+		} else {
+			saveBtn.removeAttr("rel");
+		}
+	});
+
+	//Deleting a Product
+	$("#productTable").on("click", "#deleteProduct", function () {
+		var button = $(this);
+		alertify.confirm("Are you sure, you want to delete this Product?", function () {
+			$.ajax({
+				url: "http://localhost:3000/product/" + button.attr("data-product-id"),
+				method: "DELETE",
+				headers: {
+					Authorization: "bearer " + localStorage.getItem("token"),
+				},
+				success: function (xhr) {
+					productTable.row(button.parents("tr")).remove().draw();
+					alertify.success(xhr.message);
+				},
+				error: function (xhr) {
+					const error = xhr.responseJSON;
+					alertify.error(error.message);
+				},
+			});
+		});
+	});
+	///////////////////////////////////////
+	///////////////////////////////////////
+	///////////////////////////////////////
 
 	// Exit Button (Logout)
 	$("#admin-logout").on("click", function () {

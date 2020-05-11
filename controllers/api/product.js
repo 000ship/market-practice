@@ -1,12 +1,12 @@
 const fs = require("fs");
 const path = require("path");
-const Post = require("../../models/post");
+const Product = require("../../models/product");
 const User = require("../../models/user");
 const { validationResult } = require("express-validator");
 
-exports.getPosts = async (req, res, next) => {
+exports.getProducts = async (req, res, next) => {
 	try {
-		const posts = await Post.findAll();
+		const posts = await Product.findAll();
 		res.status(200).json(posts);
 	} catch (err) {
 		if (!err.statusCode) {
@@ -16,16 +16,16 @@ exports.getPosts = async (req, res, next) => {
 	}
 };
 
-exports.getPost = async (req, res, next) => {
+exports.getProduct = async (req, res, next) => {
 	try {
-		const postId = req.params.postId;
-		const post = await Post.findByPk(postId);
-		if (!post) {
-			const error = new Error("Could not find post.");
+		const productId = req.params.productId;
+		const product = await Product.findByPk(productId);
+		if (!product) {
+			const error = new Error("Could not find product.");
 			error.statusCode = 404;
 			throw error;
 		}
-		res.status(200).json(post);
+		res.status(200).json(product);
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -34,7 +34,7 @@ exports.getPost = async (req, res, next) => {
 	}
 };
 
-exports.createPost = async (req, res, next) => {
+exports.createProduct = async (req, res, next) => {
 	try {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -58,12 +58,13 @@ exports.createPost = async (req, res, next) => {
 			error.statusCode = 404;
 			throw error;
 		}
-		const result = await user.createPost({
+		const result = await user.createProduct({
 			title: req.body.title,
 			imageUrl: "images/" + req.file.filename,
 			content: req.body.content,
+			price: req.body.price,
 		});
-		res.status(201).json({ message: "post created successfully", post: result });
+		res.status(201).json({ message: "product created successfully", product: result });
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -72,24 +73,25 @@ exports.createPost = async (req, res, next) => {
 	}
 };
 
-exports.deletePost = async (req, res, next) => {
+exports.deleteProduct = async (req, res, next) => {
 	try {
-		const postId = req.params.postId;
-		const post = await Post.findByPk(postId);
-		if (!post) {
-			const error = new Error("Could not find post.");
+		const productId = req.params.productId;
+		const product = await Product.findByPk(productId);
+		if (!product) {
+			const error = new Error("Could not find product.");
 			error.statusCode = 404;
+			console.log(error);
 			throw error;
 		}
 		// Check if the post is created by the logged in user or not
-		if (post.userId !== req.userId) {
+		if (product.userId !== req.userId) {
 			console.log("you are not authorized!");
 			const error = new Error("Not Authorized");
 			error.statusCode = 404;
 			throw error;
 		}
-		clearImage(post.imageUrl);
-		await post.destroy();
+		clearImage(product.imageUrl);
+		await product.destroy();
 		res.status(200).json({ message: "Success!" });
 	} catch (err) {
 		if (!err.statusCode) {
@@ -99,7 +101,7 @@ exports.deletePost = async (req, res, next) => {
 	}
 };
 
-exports.updatePost = async (req, res, next) => {
+exports.updateProduct = async (req, res, next) => {
 	try {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -110,9 +112,10 @@ exports.updatePost = async (req, res, next) => {
 			throw error;
 		}
 
-		const postId = req.params.postId;
+		const productId = req.params.productId;
 		const title = req.body.title;
 		const content = req.body.content;
+		const price = req.body.price;
 		let imageUrl = req.body.oldImage;
 
 		if (req.file) {
@@ -124,29 +127,29 @@ exports.updatePost = async (req, res, next) => {
 			throw error;
 		}
 
-		const post = await Post.findByPk(postId);
-		if (!post) {
+		const product = await Product.findByPk(productId);
+		if (!product) {
 			const error = new Error("Could not find post.");
 			error.statusCode = 404;
 			throw error;
 		}
 		// Check if the post is created by the logged in user or not
-		if (post.userId !== req.userId) {
-			console.log("you are not authorized!");
+		if (product.userId !== req.userId) {
 			const error = new Error("Not Authorized");
 			error.statusCode = 404;
 			throw error;
 		}
 
-		if (imageUrl !== post.imageUrl) {
-			clearImage(post.imageUrl);
+		if (imageUrl !== product.imageUrl) {
+			clearImage(product.imageUrl);
 		}
-		post.title = title;
-		post.imageUrl = imageUrl;
-		post.content = content;
+		product.title = title;
+		product.imageUrl = imageUrl;
+		product.content = content;
+		product.price = price;
 
-		const result = await post.save();
-		res.status(200).json({ message: "post Updated successfully", post: result });
+		const result = await product.save();
+		res.status(200).json({ message: "product Updated successfully", post: result });
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -155,7 +158,7 @@ exports.updatePost = async (req, res, next) => {
 	}
 };
 
-// Deleting image when deleting post or editing
+// Deleting image when deleting product or editing
 const clearImage = (filePath) => {
 	filePath = path.join(__dirname, "..", "..", filePath);
 	fs.unlink(filePath, (err) => console.log(err));

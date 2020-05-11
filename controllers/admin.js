@@ -11,3 +11,7 @@ exports.getPosts = (req, res, next) => {
 exports.getUserInfo = (req, res, next) => {
 	res.render("admin/userInfo");
 };
+
+exports.getProducts = (req, res, next) => {
+	res.render("admin/products");
+};

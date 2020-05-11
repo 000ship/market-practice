@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<%- include('../includes/admin/head.ejs') %>
+	<title>Admin Panel</title>
+	<body style="background-color: #f7f2f7;">
+		<div class="container-fluid">
+			<div class="row">
+				<!-- Left side Menu -->
+				<%- include('../includes/admin/leftPanel.ejs') %>
+				<!-- Right side  -->
+				<div class="col-lg-9">
+					<!-- navbar -->
+					<%- include('../includes/admin/navbar.ejs') %>
+					<!-- panel page -->
+					<div class="row">
+						<div class="main-panel">
+							<!-- Link to open the modal -->
+							<p>
+								<a id="open-product-modal" class="btn btn-success btn-block" href="#product-modal"
+									>New Product</a
+								>
+							</p>
+							<!-- modal window (content) -->
+							<%- include('../includes/admin/product-modal.ejs') %>
+
+							<table id="productTable" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Image</th>
+										<th>Title</th>
+										<th>Content</th>
+										<th>Price</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scripts -->
+			<%- include('../includes/admin/end.ejs') %>
+		</div>
+	</body>
+</html>

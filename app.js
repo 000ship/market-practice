@@ -7,6 +7,7 @@ const multer = require("multer");
 
 const Post = require("./models/post");
 const User = require("./models/user");
+const Product = require("./models/product");
 
 const app = express();
 
@@ -47,6 +48,7 @@ const homeRoutes = require("./routes/home");
 
 // Api Routes
 const apiPostRoutes = require("./routes/api/post");
+const apiProductRoutes = require("./routes/api/product");
 const apiAuthRoutes = require("./routes/api/auth");
 
 // making public directory accesible for static fils like css, images, etc.
@@ -58,6 +60,7 @@ app.use("/admin", adminRoutes);
 app.use(homeRoutes);
 
 app.use(apiPostRoutes);
+app.use(apiProductRoutes);
 app.use("/auth", apiAuthRoutes);
 
 // Error handling middleware
@@ -72,6 +75,8 @@ app.use((error, req, res, next) => {
 // Table Associations
 Post.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Post);
+Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(Product);
 
 // sequelize
 // .sync({ force: true })
