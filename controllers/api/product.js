@@ -4,10 +4,12 @@ const Product = require("../../models/product");
 const User = require("../../models/user");
 const { validationResult } = require("express-validator");
 
+const ITEMS_PER_PAGE = 4;
+
 exports.getProducts = async (req, res, next) => {
 	try {
-		const posts = await Product.findAll();
-		res.status(200).json(posts);
+		const products = await Product.findAll();
+		res.status(200).json(products);
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -150,6 +152,33 @@ exports.updateProduct = async (req, res, next) => {
 
 		const result = await product.save();
 		res.status(200).json({ message: "product Updated successfully", post: result });
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
+};
+
+exports.getPaginatedProducts = async (req, res, next) => {
+	try {
+		const page = +req.query.page || 1;
+		console.log("page ----" + req.query.page);
+		let totalItems = await Product.count();
+		const products = await Product.findAll({
+			limit: ITEMS_PER_PAGE,
+			offset: (page - 1) * ITEMS_PER_PAGE,
+		});
+		console.log("current page ------" + page);
+		res.status(200).json({
+			products: products,
+			currentPage: page,
+			hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+			hasPreviousPage: page > 1,
+			nextPage: page + 1,
+			previousPage: page - 1,
+			lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+		});
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;

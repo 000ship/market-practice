@@ -1,7 +1,13 @@
 const User = require("../models/user");
+const Product = require("../models/product");
 
+const ITEMS_PER_PAGE = 4;
 exports.getIndex = (req, res, next) => {
 	res.render("home/index");
+};
+
+exports.getProducts = async (req, res, next) => {
+	res.render("home/products");
 };
 
 exports.getRegistration = (req, res, next) => {

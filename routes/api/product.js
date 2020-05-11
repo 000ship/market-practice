@@ -15,6 +15,7 @@ const validations = [
 
 router.get("/products", isAuth, apiController.getProducts);
 router.get("/product/:productId", isAuth, apiController.getProduct);
+router.get("/paginatedProducts", apiController.getPaginatedProducts);
 router.post("/product", isAuth, validations, apiController.createProduct);
 router.delete("/product/:productId", isAuth, apiController.deleteProduct);
 router.put("/product/:productId", isAuth, validations, apiController.updateProduct);
