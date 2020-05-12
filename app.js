@@ -8,6 +8,8 @@ const multer = require("multer");
 const Post = require("./models/post");
 const User = require("./models/user");
 const Product = require("./models/product");
+const Cart = require("./models/cart");
+const CartItem = require("./models/cart-item");
 
 const app = express();
 
@@ -77,6 +79,10 @@ Post.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Post);
 Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User, { onDelete: "CASCADE" });
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 // sequelize
 // .sync({ force: true })
