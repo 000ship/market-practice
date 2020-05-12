@@ -10,6 +10,10 @@ exports.getProducts = async (req, res, next) => {
 	res.render("home/products");
 };
 
+exports.getCart = async (req, res, next) => {
+	res.render("home/cart");
+};
+
 exports.getRegistration = (req, res, next) => {
 	res.render("home/registrationForm", {
 		errorMessage: null,

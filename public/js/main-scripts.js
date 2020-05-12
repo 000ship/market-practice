@@ -13,10 +13,16 @@ $(function () {
 					$("#registerBtn").removeAttr("href");
 					$("#main-img-author").attr("src", data.imageUrl);
 					$("#main-img-author-link").attr("href", "/admin");
+					$("#cart-navbar").show();
 					isloggedin = true;
 				}
 			},
+			error: function (error) {
+				alertify.error(error.message);
+			},
 		});
+	} else {
+		$("#cart-navbar").hide();
 	}
 
 	// Forms Validation
