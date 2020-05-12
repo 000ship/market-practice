@@ -36,7 +36,9 @@ exports.signup = async (req, res, next) => {
 			emailTokenExpiration: Date.now() + 3600000,
 		});
 		const result = await user.save();
-
+		const createdUser = await User.findOne({ where: { id: result.id } });
+		createdUser.createCart();
+		// Sending account Confirmation E-mail
 		sendEmail(email, token, "activate");
 		res.status(201).json({
 			message: "You signed up Successfully. Please confirm your E-mail address.",

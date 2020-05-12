@@ -11,6 +11,6 @@ router.get("/productsPage", homeController.getProducts);
 router.get("/registerForm", homeController.getRegistration);
 router.get("/confirmEmail/:token", homeController.confirmEmail);
 router.get("/recoverPassword/:token", homeController.recoverPassword);
-router.get("/cart", isAuth, homeController.getCart);
+router.get("/cart", homeController.getCart);
 
 module.exports = router;

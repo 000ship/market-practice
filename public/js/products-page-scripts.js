@@ -47,7 +47,7 @@ $(function () {
 				wrapper.append(container);
 				wrapper.append(pagination);
 			} else {
-				container.append("<h2>No Products Found!</h2>");
+				wrapper.append("<h2>No Products Found!</h2>");
 			}
 		},
 		error: (error) => {
