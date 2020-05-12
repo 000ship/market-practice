@@ -51,6 +51,7 @@ const homeRoutes = require("./routes/home");
 // Api Routes
 const apiPostRoutes = require("./routes/api/post");
 const apiProductRoutes = require("./routes/api/product");
+const apiShopRoutes = require("./routes/api/shop");
 const apiAuthRoutes = require("./routes/api/auth");
 
 // making public directory accesible for static fils like css, images, etc.
@@ -63,6 +64,7 @@ app.use(homeRoutes);
 
 app.use(apiPostRoutes);
 app.use(apiProductRoutes);
+app.use(apiShopRoutes);
 app.use("/auth", apiAuthRoutes);
 
 // Error handling middleware
