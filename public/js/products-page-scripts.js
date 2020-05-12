@@ -19,7 +19,8 @@ $(function () {
                             </div>
                             <p class="news-meta">${product.content}</p>
                             <h3 class="text-center">${product.price}</h3>
-                            <button
+							<button
+								id="addCart"
                                 class="btn btn-warning btn-block"
                                 data-product-id="${product.id}">
                                 Add to Cart
@@ -53,5 +54,32 @@ $(function () {
 		error: (error) => {
 			console.log(error);
 		},
+	});
+
+	$(document).on("click", "#addCart", function (e) {
+		e.preventDefault();
+		var prodId = $(this).attr("data-product-id");
+		var data = new FormData();
+		data.append("productId", prodId);
+
+		$.ajax({
+			url: "http://localhost:3000/addToCart",
+			type: "post",
+			processData: false,
+			contentType: false,
+			data: data,
+			headers: {
+				Authorization: "bearer " + localStorage.getItem("token"),
+			},
+			success: (xhr) => {
+				console.log("success");
+				alertify.success(xhr);
+			},
+			error: (xhr) => {
+				console.log("error");
+				const error = xhr.responseJSON;
+				alertify.error(error.message);
+			},
+		});
 	});
 });
