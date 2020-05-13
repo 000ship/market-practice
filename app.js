@@ -49,11 +49,12 @@ app.set("views", "views");
 // View routes
 const adminRoutes = require("./routes/admin");
 const homeRoutes = require("./routes/home");
+const paymentRoutes = require("./routes/payment");
 
 // Api Routes
 const apiPostRoutes = require("./routes/api/post");
 const apiProductRoutes = require("./routes/api/product");
-const apiShopRoutes = require("./routes/api/shop");
+const apiCartRoutes = require("./routes/api/cart");
 const apiAuthRoutes = require("./routes/api/auth");
 
 // making public directory accesible for static fils like css, images, etc.
@@ -63,10 +64,11 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 // Using routes
 app.use("/admin", adminRoutes);
 app.use(homeRoutes);
+app.use(paymentRoutes);
 
 app.use(apiPostRoutes);
 app.use(apiProductRoutes);
-app.use(apiShopRoutes);
+app.use(apiCartRoutes);
 app.use("/auth", apiAuthRoutes);
 
 // Error handling middleware

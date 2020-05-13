@@ -1,6 +1,6 @@
 const express = require("express");
 
-const apiController = require("../../controllers/api/shop");
+const apiController = require("../../controllers/api/cart");
 
 const isAuth = require("../../middleware/is-auth");
 

@@ -2,27 +2,8 @@
 <html lang="en" dir="ltr">
 	<head>
 		<%- include('../includes/head.ejs') %>
-		<style>
-			.news-container {
-				grid-template-columns: 1fr 1fr 1fr 1fr;
-				margin-bottom: 40px;
-			}
-			.product-title {
-				text-align: center;
-				font-size: 18px;
-			}
-			.main-content {
-				padding-top: 30px;
-			}
-			.news-card-img {
-				height: 150px;
-			}
-			.pagination {
-				padding-bottom: 30px;
-			}
-		</style>
 	</head>
-	<title>Products</title>
+	<title>Orders</title>
 	<body>
 		<!-- Navigation Bar -->
 		<%- include('../includes/navbar.ejs') %>
@@ -36,8 +17,18 @@
 				<!-- Main Content -->
 				<div class="col-lg-12 main-content">
 					<!-- News Section -->
-					<div id="container" class="container-fluid"></div>
-					<!-- End News Section -->
+					<div id="container" class="container-fluid">
+						<!-- End News Section -->
+						<% if(errorMessage !== ''){ %>
+						<div
+							class="alert <%= type === 'success' ? 'alert-success' : 'alert-danger' %>"
+							role="alert"
+						>
+							<%= errorMessage %>
+						</div>
+						<% } %>
+						<hr />
+					</div>
 				</div>
 				<!-- End Main Content -->
 			</div>
@@ -49,7 +40,5 @@
 
 		<!-- Scripts -->
 		<%- include('../includes/end.ejs') %>
-		<script src="/js/products-page-scripts.js" charset="utf-8"></script>
-		<script src="/js/main-scripts.js" charset="utf-8"></script>
 	</body>
 </html>

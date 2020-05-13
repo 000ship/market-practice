@@ -2,6 +2,9 @@ $(function () {
 	// Populating the table ..
 	var totalAmount = 0;
 	var table = $("#cart-table").DataTable({
+		paging: false,
+		ordering: false,
+		searching: false,
 		ajax: {
 			url: "http://localhost:3000/getCart",
 			headers: {
@@ -9,7 +12,6 @@ $(function () {
 			},
 			dataSrc: "",
 		},
-		success: function () {},
 		columns: [
 			{
 				data: "imageUrl",
@@ -50,19 +52,31 @@ $(function () {
 	// After table has rendered completely
 	table.on("draw", function (row, data, start, end, display) {
 		$("#invoice-total").text(totalAmount);
+		$("#userId").val(userId);
 	});
 
-	// Checkout Button
-	$("#checkout-btn").on("click", function (e) {
-		e.preventDefault();
-		alertify.confirm(
-			"Continue to the payment page?",
-			function () {
-				alertify.success("Checked-out!");
-			},
-			function () {
-				alertify.error("Canceled");
-			}
-		);
-	});
+	// // Checkout Button
+	// $("#checkout-btn").on("click", function (e) {
+	// 	e.preventDefault();
+	// 	alertify.confirm(
+	// 		"Continue to the payment page?",
+	// 		function () {
+	// 			var data = new FormData();
+	// 			data.append("total", totalAmount);
+	// 			$.ajax({
+	// 				url: "http://localhost:3000/checkout",
+	// 				type: "post",
+	// 				processData: false,
+	// 				contentType: false,
+	// 				data: data,
+	// 				headers: {
+	// 					Authorization: "bearer " + localStorage.getItem("token"),
+	// 				},
+	// 			});
+	// 		},
+	// 		function () {
+	// 			alertify.error("Canceled");
+	// 		}
+	// 	);
+	// });
 });

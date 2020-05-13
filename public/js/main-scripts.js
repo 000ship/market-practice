@@ -1,5 +1,7 @@
+let userId = null;
 $(function () {
 	let isloggedin = false;
+
 	// Update navbar profile pic & buttons if there's a logged in user
 	if (localStorage.getItem("token")) {
 		$.ajax({
@@ -15,6 +17,7 @@ $(function () {
 					$("#main-img-author-link").attr("href", "/admin");
 					$("#cart-navbar").show();
 					isloggedin = true;
+					userId = data.userId;
 				}
 			},
 			error: function (error) {

@@ -40,7 +40,10 @@
 							</div>
 							<div class="col-sm-4">
 								<br />
-								<button id="checkout-btn" class="btn btn-block btn-success">Checkout</button>
+								<form action="/checkout" method="post">
+									<input id="userId" type="hidden" name="userId" />
+									<button class="btn btn-block btn-success" type="submit">Checkout</button>
+								</form>
 							</div>
 						</div>
 						<br /><br />
@@ -57,6 +60,7 @@
 
 		<!-- Scripts -->
 		<%- include('../includes/end.ejs') %>
+		<script src="/js/main-scripts.js" charset="utf-8"></script>
 		<script src="/js/cart-page-scripts.js" charset="utf-8"></script>
 	</body>
 </html>
