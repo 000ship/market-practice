@@ -34,12 +34,19 @@ $(function () {
 								$("#user-name-input").val(data.name);
 								$("#user-imageUrl-input").val("");
 							},
+							error: function (error) {
+								alertify.error("Please Login again.");
+							},
 						});
 					}
 				},
+				error: function () {
+					alertify.error("Please Login again.");
+					location.href = "/";
+				},
 			});
 		} else {
-			this.location.href = "/";
+			location.href = "/";
 		}
 	}
 
