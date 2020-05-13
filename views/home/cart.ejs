@@ -18,7 +18,32 @@
 				<div class="col-lg-12 main-content">
 					<!-- News Section -->
 					<div id="container" class="container-fluid">
-						<h1>Empty Cart ...</h1>
+						<table id="cart-table" class="table table-hover">
+							<thead>
+								<tr>
+									<th>Image</th>
+									<th>Product</th>
+									<th>Price</th>
+									<th>Quantity</th>
+									<th>Total</th>
+								</tr>
+							</thead>
+						</table>
+						<hr />
+						<br />
+						<div class="row">
+							<div class="col-sm-4">
+								<h2>Total Price:</h2>
+							</div>
+							<div class="col-sm-4">
+								<h3 id="invoice-total"></h3>
+							</div>
+							<div class="col-sm-4">
+								<br />
+								<button id="checkout-btn" class="btn btn-block btn-success">Checkout</button>
+							</div>
+						</div>
+						<br /><br />
 					</div>
 					<!-- End News Section -->
 				</div>
@@ -32,6 +57,6 @@
 
 		<!-- Scripts -->
 		<%- include('../includes/end.ejs') %>
-		<!-- <script src="/js/products-page-scripts.js" charset="utf-8"></script> -->
+		<script src="/js/cart-page-scripts.js" charset="utf-8"></script>
 	</body>
 </html>

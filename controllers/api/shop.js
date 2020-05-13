@@ -32,3 +32,17 @@ exports.addToCart = async (req, res, next) => {
 		next(err);
 	}
 };
+
+exports.getCart = async (req, res, next) => {
+	try {
+		const user = await User.findOne({ where: { id: req.userId } });
+		const cart = await user.getCart({ include: ["products"] });
+		const products = await cart.getProducts();
+		res.status(200).json(products);
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
+};

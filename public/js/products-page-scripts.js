@@ -62,6 +62,7 @@ $(function () {
 		var data = new FormData();
 		data.append("productId", prodId);
 
+		// Adding product to cart
 		$.ajax({
 			url: "http://localhost:3000/addToCart",
 			type: "post",
@@ -72,11 +73,9 @@ $(function () {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},
 			success: (xhr) => {
-				console.log("success");
-				alertify.success(xhr);
+				alertify.success("Added To Cart");
 			},
 			error: (xhr) => {
-				console.log("error");
 				const error = xhr.responseJSON;
 				alertify.error(error.message);
 			},
