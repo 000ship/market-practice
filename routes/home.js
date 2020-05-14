@@ -12,5 +12,6 @@ router.get("/registerForm", homeController.getRegistration);
 router.get("/confirmEmail/:token", homeController.confirmEmail);
 router.get("/recoverPassword/:token", homeController.recoverPassword);
 router.get("/cart", homeController.getCart);
+router.get("/orders", homeController.getOrders);
 
 module.exports = router;

@@ -14,6 +14,13 @@ exports.getCart = async (req, res, next) => {
 	res.render("home/cart");
 };
 
+exports.getOrders = async (req, res, next) => {
+	res.render("home/orders", {
+		errorMessage: "",
+		type: "",
+	});
+};
+
 exports.getRegistration = (req, res, next) => {
 	res.render("home/registrationForm", {
 		errorMessage: null,

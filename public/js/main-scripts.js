@@ -16,6 +16,7 @@ $(function () {
 					$("#main-img-author").attr("src", data.imageUrl);
 					$("#main-img-author-link").attr("href", "/admin");
 					$("#cart-navbar").show();
+					$("#order-navbar").show();
 					isloggedin = true;
 					userId = data.userId;
 				}
@@ -23,10 +24,12 @@ $(function () {
 			error: function (error) {
 				alertify.error("Please Login Again.");
 				$("#cart-navbar").hide();
+				$("#order-navbar").hide();
 			},
 		});
 	} else {
 		$("#cart-navbar").hide();
+		$("#order-navbar").hide();
 	}
 
 	// Resize $ Change Background on Scroll

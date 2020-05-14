@@ -49,6 +49,7 @@ exports.getCart = async (req, res, next) => {
 
 exports.getOrders = async (req, res, next) => {
 	try {
+		console.log("--------");
 		const user = await User.findOne({ where: { id: req.userId } });
 		const orders = await user.getOrders();
 		res.status(200).json(orders);
