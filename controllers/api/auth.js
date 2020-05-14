@@ -6,12 +6,13 @@ const path = require("path");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const config = require("../../config");
 
 const transport = nodemailer.createTransport({
-	service: "gmail",
+	service: config.email.service,
 	auth: {
-		user: "niamileo@gmail.com",
-		pass: "23472875",
+		user: config.email.username,
+		pass: config.email.password,
 	},
 });
 
@@ -78,7 +79,7 @@ exports.login = async (req, res, next) => {
 			error.statusCode = 401;
 			throw error;
 		}
-		const token = jwt.sign({ email: loadedUser.email, userId: loadedUser.id }, "somesupersecret", {
+		const token = jwt.sign({ email: loadedUser.email, userId: loadedUser.id }, config.jwt.secret, {
 			expiresIn: 60000,
 		});
 		res.status(200).json({ token: token, userId: loadedUser.id });
@@ -93,7 +94,7 @@ exports.login = async (req, res, next) => {
 exports.getStatus = async (req, res, next) => {
 	try {
 		const token = req.get("Authorization").split(" ")[1];
-		let decodedToken = jwt.verify(token, "somesupersecret");
+		let decodedToken = jwt.verify(token, config.jwt.secret);
 		// if didn't verify the token
 		if (!decodedToken) {
 			const error = new Error("Not Authenticated");
@@ -290,7 +291,7 @@ const sendEmail = (to, token, method) => {
 
 	transport.sendMail({
 		to: to,
-		from: "niamileo@gmail.com",
+		from: config.email.username,
 		subject: subject,
 		html: html,
 	});

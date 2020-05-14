@@ -3,6 +3,7 @@ const sequelize = require("./util/database");
 const bodyParser = require("body-parser");
 const path = require("path");
 const multer = require("multer");
+const config = require("./config");
 // const flash = require("connect-flash");
 
 const Post = require("./models/post");
@@ -97,6 +98,6 @@ Order.belongsToMany(Product, { through: OrderItem });
 sequelize
 	.sync()
 	.then((result) => {
-		app.listen(3000);
+		app.listen(config.app.port);
 	})
 	.catch((err) => console.log(err));

@@ -1,6 +1,7 @@
 const request = require("request-promise");
 const User = require("../models/user");
 const Order = require("../models/order");
+const config = require("../config");
 
 // Redirecting to Zarrinpal checkout
 exports.checkout = async (req, res, next) => {
@@ -16,26 +17,7 @@ exports.checkout = async (req, res, next) => {
 		});
 
 		// Sending Request to Zarinpal gateway
-		let params = {
-			MerchantID: "6a69819e-1183-11e9-be50-005056a205be",
-			Amount: total,
-			CallbackURL: "http://localhost:3000/paymentChecker",
-			Description: "For Buying Products",
-			Email: user.email,
-		};
-
-		let options = {
-			method: "POST",
-			uri: "https://www.zarinpal.com/pg/rest/WebGate/PaymentRequest.json",
-			headers: {
-				"cache-control": "no-cache",
-				"content-type": "application/json",
-			},
-			body: params,
-			json: true,
-		};
-
-		const data = await request(options);
+		const data = await payment("pay", user.email, total);
 		// Saving payment information to database
 		let orderOptions = {
 			resNumber: data.Authority,
@@ -44,7 +26,7 @@ exports.checkout = async (req, res, next) => {
 		};
 
 		const order = await user.createOrder(orderOptions);
-		const result = await order.addProducts(
+		await order.addProducts(
 			products.map((product) => {
 				product.orderItem = { quantity: product.cartItem.quantity };
 				return product;
@@ -70,25 +52,8 @@ exports.paymentChecker = async (req, res, next) => {
 				type: "error",
 			});
 		}
-
-		let params = {
-			MerchantID: "6a69819e-1183-11e9-be50-005056a205be",
-			Amount: order.price,
-			Authority: req.query.Authority,
-		};
-
-		let options = {
-			method: "POST",
-			uri: "https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json",
-			headers: {
-				"cache-control": "no-cache",
-				"content-type": "application/json",
-			},
-			body: params,
-			json: true,
-		};
-
-		const data = await request(options);
+		// Verifying the payment
+		const data = await payment("check", "", order.price, req.query.Authority);
 		if (data.Status == 100) {
 			order.paid = true;
 			order.save();
@@ -110,4 +75,37 @@ exports.paymentChecker = async (req, res, next) => {
 	}
 };
 
-var payment = function () {};
+var payment = async function (type, email, total, Authority) {
+	let params;
+	let uri;
+	if (type === "pay") {
+		params = {
+			MerchantID: config.payment.merchantID,
+			Amount: total,
+			CallbackURL: "http://localhost:3000/paymentChecker",
+			Description: "For Buying Products",
+			Email: email,
+		};
+		uri = "https://www.zarinpal.com/pg/rest/WebGate/PaymentRequest.json";
+	} else {
+		params = {
+			MerchantID: config.payment.merchantID,
+			Amount: total,
+			Authority: Authority,
+		};
+		uri = "https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json";
+	}
+
+	let options = {
+		method: "POST",
+		uri: uri,
+		headers: {
+			"cache-control": "no-cache",
+			"content-type": "application/json",
+		},
+		body: params,
+		json: true,
+	};
+
+	return await request(options);
+};

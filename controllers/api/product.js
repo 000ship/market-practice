@@ -163,13 +163,11 @@ exports.updateProduct = async (req, res, next) => {
 exports.getPaginatedProducts = async (req, res, next) => {
 	try {
 		const page = +req.query.page || 1;
-		console.log("page ----" + req.query.page);
 		let totalItems = await Product.count();
 		const products = await Product.findAll({
 			limit: ITEMS_PER_PAGE,
 			offset: (page - 1) * ITEMS_PER_PAGE,
 		});
-		console.log("current page ------" + page);
 		res.status(200).json({
 			products: products,
 			currentPage: page,
