@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Product = require("../models/product");
+const config = require("../config");
 
 const ITEMS_PER_PAGE = 4;
 exports.getIndex = (req, res, next) => {
@@ -23,6 +24,7 @@ exports.getOrders = async (req, res, next) => {
 
 exports.getRegistration = (req, res, next) => {
 	res.render("home/registrationForm", {
+		siteKey: config.recaptcha.siteKey,
 		errorMessage: null,
 	});
 };

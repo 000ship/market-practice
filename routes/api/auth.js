@@ -6,11 +6,13 @@ const User = require("../../models/user");
 const apiAuthController = require("../../controllers/api/auth");
 
 const isAuth = require("../../middleware/is-auth");
+const verifyRecaptcha = require("../../middleware/recaptcha");
 
 const router = express.Router();
 
 router.put(
 	"/signup",
+	verifyRecaptcha,
 	[
 		body("email")
 			.isEmail()
@@ -40,7 +42,7 @@ router.put(
 	apiAuthController.signup
 );
 
-router.post("/login", apiAuthController.login);
+router.post("/login", verifyRecaptcha, apiAuthController.login);
 
 router.get("/getStatus", apiAuthController.getStatus);
 router.put("/updateUserInfo/:userId", isAuth, apiAuthController.updateUserInfo);

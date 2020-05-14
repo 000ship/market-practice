@@ -23,6 +23,10 @@
 			placeholder="Repeat Your Password"
 			required="required"
 		/>
+		<br />
+		<div class="g-recaptcha" data-callback="onHuman" data-sitekey="<%= siteKey %>"></div>
+		<input type="hidden" id="captcha" name="captcha" value="" />
+		<br />
 	</form>
 	<div class="container-fluid">
 		<div class="row" style="margin-top: 40px;">

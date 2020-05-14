@@ -1,3 +1,7 @@
+function onHuman(response) {
+	document.getElementById("captcha").value = response;
+}
+
 $(function () {
 	// Resize $ Change Background on Scroll
 	$(document).scroll(function () {
@@ -8,6 +12,9 @@ $(function () {
 	////////////////////////////////////////
 	///////////// REGISTER /////////////////
 	////////////////////////////////////////
+
+	$("#captcha").val("");
+
 	// Forms Validation
 	var login_validate = $("#loginForm").validate();
 	var signup_validate = $("#signupForm").validate({
@@ -38,20 +45,28 @@ $(function () {
 		var formData = new FormData(form);
 
 		if ($("#signupForm").valid()) {
-			$.ajax({
-				url: "http://localhost:3000/auth/signup",
-				type: "PUT",
-				processData: false,
-				contentType: false,
-				data: formData,
-				success: function (xhr) {
-					alertify.success(xhr.message);
-				},
-				error: function (xhr) {
-					const error = xhr.responseJSON.data[0];
-					alertify.error(error.msg);
-				},
-			});
+			var response = $("#captcha").val();
+			if (response.length == 0) {
+				//reCaptcha not verified
+				alertify.error("Please verify that you are a human!");
+			} else {
+				$.ajax({
+					url: "http://localhost:3000/auth/signup",
+					type: "PUT",
+					processData: false,
+					contentType: false,
+					data: formData,
+					success: function (xhr) {
+						$("#captcha").val("");
+						alertify.success(xhr.message);
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON.data[0];
+						$("#captcha").val("");
+						alertify.error(error.msg);
+					},
+				});
+			}
 		}
 	});
 
@@ -61,22 +76,31 @@ $(function () {
 		var form = $("#loginForm")[0];
 		var formData = new FormData(form);
 		if ($("#loginForm").valid()) {
-			$.ajax({
-				url: "http://localhost:3000/auth/login",
-				type: "POST",
-				processData: false,
-				contentType: false,
-				data: formData,
-				success: function (result) {
-					localStorage.setItem("token", result.token);
-					alertify.success(result.message);
-					location.href = "/";
-				},
-				error: function (xhr) {
-					const error = xhr.responseJSON;
-					alertify.error(error.message);
-				},
-			});
+			// var response = grecaptcha.getResponse();
+			var response = $("#captcha").val();
+			if (response.length == 0) {
+				//reCaptcha not verified
+				alertify.error("Please verify that you are a human!");
+			} else {
+				$.ajax({
+					url: "http://localhost:3000/auth/login",
+					type: "POST",
+					processData: false,
+					contentType: false,
+					data: formData,
+					success: function (result) {
+						localStorage.setItem("token", result.token);
+						alertify.success(result.message);
+						$("#captcha").val("");
+						location.href = "/";
+					},
+					error: function (xhr) {
+						const error = xhr.responseJSON;
+						$("#captcha").val("");
+						alertify.error(error.message);
+					},
+				});
+			}
 		}
 	});
 
