@@ -38,35 +38,44 @@ exports.getProduct = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
 	try {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			// Delete uploaded image incase of validation error
-			clearImage("images/" + req.file.filename);
-			const error = new Error("Validation failed; entered data is incorrect.");
-			error.statusCode = 422;
-			throw error;
-		}
-
-		if (!req.file) {
-			const error = new Error("No image provided!");
-			error.statusCode = 422;
-			throw error;
-		}
-
 		const user = await User.findByPk(req.userId);
+		const permission = ac.can(user.role).createOwn("product");
+		if (permission.granted) {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				// Delete uploaded image incase of validation error
+				clearImage("images/" + req.file.filename);
+				const error = new Error("Validation failed; entered data is incorrect.");
+				error.statusCode = 422;
+				throw error;
+			}
 
-		if (!user) {
-			const error = new Error("Could not find user.");
-			error.statusCode = 404;
+			if (!req.file) {
+				const error = new Error("No image provided!");
+				error.statusCode = 422;
+				throw error;
+			}
+
+			const user = await User.findByPk(req.userId);
+
+			if (!user) {
+				const error = new Error("Could not find user.");
+				error.statusCode = 404;
+				throw error;
+			}
+			const result = await user.createProduct({
+				title: req.body.title,
+				imageUrl: "images/" + req.file.filename,
+				content: req.body.content,
+				price: req.body.price,
+			});
+			res.status(201).json({ message: "product created successfully", product: result });
+		} else {
+			// If permission is not granted
+			const error = new Error("You are not allowed to create product.");
+			error.statusCode = 405;
 			throw error;
 		}
-		const result = await user.createProduct({
-			title: req.body.title,
-			imageUrl: "images/" + req.file.filename,
-			content: req.body.content,
-			price: req.body.price,
-		});
-		res.status(201).json({ message: "product created successfully", product: result });
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -79,22 +88,33 @@ exports.deleteProduct = async (req, res, next) => {
 	try {
 		const productId = req.params.productId;
 		const product = await Product.findByPk(productId);
-		if (!product) {
-			const error = new Error("Could not find product.");
-			error.statusCode = 404;
-			console.log(error);
+		const user = await User.findByPk(req.userId);
+
+		const permission = ac.can(user.role).deleteOwn("product");
+		// If you have permission, continue ..
+		if (permission.granted) {
+			if (!product) {
+				const error = new Error("Could not find product.");
+				error.statusCode = 404;
+				console.log(error);
+				throw error;
+			}
+			// Check if the post is created by the logged in user or not
+			if (product.userId !== req.userId) {
+				console.log("you are not authorized!");
+				const error = new Error("Not Authorized");
+				error.statusCode = 404;
+				throw error;
+			}
+			clearImage(product.imageUrl);
+			await product.destroy();
+			res.status(200).json({ message: "Success!" });
+		} else {
+			// If permission is not granted
+			const error = new Error("You are not allowed to delete products.");
+			error.statusCode = 405;
 			throw error;
 		}
-		// Check if the post is created by the logged in user or not
-		if (product.userId !== req.userId) {
-			console.log("you are not authorized!");
-			const error = new Error("Not Authorized");
-			error.statusCode = 404;
-			throw error;
-		}
-		clearImage(product.imageUrl);
-		await product.destroy();
-		res.status(200).json({ message: "Success!" });
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -105,53 +125,63 @@ exports.deleteProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
 	try {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			// Delete uploaded image incase of validation error
-			clearImage("images/" + req.file.filename);
-			const error = new Error("Validation failed; entered data is incorrect.");
-			error.statusCode = 422;
+		const user = await User.findByPk(req.userId);
+		const permission = ac.can(user.role).updateOwn("product");
+		// If you have permission, continue ..
+		if (permission.granted) {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				// Delete uploaded image incase of validation error
+				clearImage("images/" + req.file.filename);
+				const error = new Error("Validation failed; entered data is incorrect.");
+				error.statusCode = 422;
+				throw error;
+			}
+
+			const productId = req.params.productId;
+			const title = req.body.title;
+			const content = req.body.content;
+			const price = req.body.price;
+			let imageUrl = req.body.oldImage;
+
+			if (req.file) {
+				imageUrl = "images/" + req.file.filename;
+			}
+			if (!imageUrl) {
+				const error = new Error("No file pickd!");
+				error.statusCode = 422;
+				throw error;
+			}
+
+			const product = await Product.findByPk(productId);
+			if (!product) {
+				const error = new Error("Could not find post.");
+				error.statusCode = 404;
+				throw error;
+			}
+			// Check if the post is created by the logged in user or not
+			if (product.userId !== req.userId) {
+				const error = new Error("Not Authorized");
+				error.statusCode = 404;
+				throw error;
+			}
+
+			if (imageUrl !== product.imageUrl) {
+				clearImage(product.imageUrl);
+			}
+			product.title = title;
+			product.imageUrl = imageUrl;
+			product.content = content;
+			product.price = price;
+
+			const result = await product.save();
+			res.status(200).json({ message: "product Updated successfully", post: result });
+		} else {
+			// If permission is not granted
+			const error = new Error("You are not allowed to update the product.");
+			error.statusCode = 405;
 			throw error;
 		}
-
-		const productId = req.params.productId;
-		const title = req.body.title;
-		const content = req.body.content;
-		const price = req.body.price;
-		let imageUrl = req.body.oldImage;
-
-		if (req.file) {
-			imageUrl = "images/" + req.file.filename;
-		}
-		if (!imageUrl) {
-			const error = new Error("No file pickd!");
-			error.statusCode = 422;
-			throw error;
-		}
-
-		const product = await Product.findByPk(productId);
-		if (!product) {
-			const error = new Error("Could not find post.");
-			error.statusCode = 404;
-			throw error;
-		}
-		// Check if the post is created by the logged in user or not
-		if (product.userId !== req.userId) {
-			const error = new Error("Not Authorized");
-			error.statusCode = 404;
-			throw error;
-		}
-
-		if (imageUrl !== product.imageUrl) {
-			clearImage(product.imageUrl);
-		}
-		product.title = title;
-		product.imageUrl = imageUrl;
-		product.content = content;
-		product.price = price;
-
-		const result = await product.save();
-		res.status(200).json({ message: "product Updated successfully", post: result });
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;

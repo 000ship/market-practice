@@ -7,6 +7,10 @@ const fs = require("fs");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const config = require("../../config");
+const AccessControll = require("accesscontrol");
+
+// Initializing AccessControll
+const ac = new AccessControll(config.grantsObject);
 
 const transport = nodemailer.createTransport({
 	service: config.email.service,
@@ -129,27 +133,36 @@ exports.updateUserInfo = async (req, res, next) => {
 			error.statusCode = 404;
 			throw error;
 		}
-		// If there's an image, it will replace.
-		// Otherwise it won't change
-		let imageUrl = user.imageUrl;
-		if (req.file) {
-			imageUrl = "images/" + req.file.filename;
-		}
-		// If the loggedin user is different from editable user
-		if (req.userId != userId) {
-			const error = new Error("You are Not Authorized!");
-			error.statusCode = 404;
+		const permission = ac.can(user.role).updateOwn("profile");
+		// If you have permission, continue ..
+		if (permission.granted) {
+			// If there's an image, it will replace.
+			// Otherwise it won't change
+			let imageUrl = user.imageUrl;
+			if (req.file) {
+				imageUrl = "images/" + req.file.filename;
+			}
+			// If the loggedin user is different from editable user
+			if (req.userId != userId) {
+				const error = new Error("You are Not Authorized!");
+				error.statusCode = 404;
+				throw error;
+			}
+			// If there's an image, it will delete old one & keep the new one
+			if (imageUrl !== user.imageUrl && user.imageUrl !== "images/default-profile-pic.jpg") {
+				clearImage(user.imageUrl);
+			}
+			user.name = name;
+			user.imageUrl = imageUrl;
+
+			const result = await user.save();
+			res.status(200).json({ message: "User info Updated successfully", user: result });
+		} else {
+			// If permission is not granted
+			const error = new Error("You are not allowed to update the profile.");
+			error.statusCode = 405;
 			throw error;
 		}
-		// If there's an image, it will delete old one & keep the new one
-		if (imageUrl !== user.imageUrl && user.imageUrl !== "images/default-profile-pic.jpg") {
-			clearImage(user.imageUrl);
-		}
-		user.name = name;
-		user.imageUrl = imageUrl;
-
-		const result = await user.save();
-		res.status(200).json({ message: "User info Updated successfully", user: result });
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
@@ -167,7 +180,16 @@ exports.getUserInfo = async (req, res, next) => {
 			error.statusCode = 404;
 			throw error;
 		}
-		res.status(200).json(user);
+		const permission = ac.can(user.role).readOwn("profile");
+		// If you have permission, continue ..
+		if (permission.granted) {
+			res.status(200).json(user);
+		} else {
+			// If permission is not granted
+			const error = new Error("You are not allowed to get the profile info.");
+			error.statusCode = 405;
+			throw error;
+		}
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;
