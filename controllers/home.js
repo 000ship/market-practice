@@ -22,6 +22,10 @@ exports.getOrders = async (req, res, next) => {
 	});
 };
 
+exports.getSitemap = async (req, res, next) => {
+	res.send("/public/sitemap.xml");
+};
+
 exports.getRegistration = (req, res, next) => {
 	res.render("home/registrationForm", {
 		siteKey: config.recaptcha.siteKey,

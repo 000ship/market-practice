@@ -3,7 +3,6 @@ const sequelize = require("./util/database");
 const bodyParser = require("body-parser");
 const path = require("path");
 const multer = require("multer");
-const sitemap = require("express-sitemap")();
 const config = require("./config");
 // const flash = require("connect-flash");
 
@@ -14,6 +13,12 @@ const Cart = require("./models/cart");
 const CartItem = require("./models/cart-item");
 const Order = require("./models/order");
 const OrderItem = require("./models/order-item");
+
+const sitemap = require("express-sitemap")({
+	sitemap: "public/sitemap.xml",
+	url: "localhost",
+	post: "3000",
+});
 
 const app = express();
 
@@ -95,8 +100,9 @@ User.hasMany(Order);
 Order.belongsToMany(Product, { through: OrderItem });
 
 // Generating sitemap
-sitemap.generate4(app, ["/", "/auth", "/admin"]);
+sitemap.generate4(app, ["/", "/auth"]);
 sitemap.XMLtoFile();
+
 // sequelize
 // .sync({ force: true })
 sequelize

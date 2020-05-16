@@ -13,5 +13,6 @@ router.get("/confirmEmail/:token", homeController.confirmEmail);
 router.get("/recoverPassword/:token", homeController.recoverPassword);
 router.get("/cart", homeController.getCart);
 router.get("/orders", homeController.getOrders);
+router.get("/sitemap.xml", homeController.getSitemap);
 
 module.exports = router;
