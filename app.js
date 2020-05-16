@@ -3,6 +3,7 @@ const sequelize = require("./util/database");
 const bodyParser = require("body-parser");
 const path = require("path");
 const multer = require("multer");
+const sitemap = require("express-sitemap")();
 const config = require("./config");
 // const flash = require("connect-flash");
 
@@ -93,6 +94,9 @@ Product.belongsToMany(Cart, { through: CartItem });
 User.hasMany(Order);
 Order.belongsToMany(Product, { through: OrderItem });
 
+// Generating sitemap
+sitemap.generate4(app, ["/", "/auth", "/admin"]);
+sitemap.XMLtoFile();
 // sequelize
 // .sync({ force: true })
 sequelize
