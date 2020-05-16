@@ -34,6 +34,7 @@ exports.confirmEmail = async (req, res, next) => {
 		const token = await req.params.token;
 		if (!token) {
 			return res.render("home/registrationForm", {
+				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Broken. Please request for a new link.",
 				type: "error",
 			});
@@ -45,18 +46,21 @@ exports.confirmEmail = async (req, res, next) => {
 		});
 		if (!user) {
 			return res.render("home/registrationForm", {
+				siteKey: config.recaptcha.siteKey,
 				errorMessage: "No User Found",
 				type: "error",
 			});
 		}
 		if (user.status === true) {
 			return res.render("home/registrationForm", {
+				siteKey: config.recaptcha.siteKey,
 				errorMessage: "You are already activated.",
 				type: "success",
 			});
 		}
 		if (user.emailTokenExpiration < new Date(Date.now())) {
 			return res.render("home/registrationForm", {
+				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Expired. Please request for a new link.",
 				type: "error",
 			});
@@ -66,6 +70,7 @@ exports.confirmEmail = async (req, res, next) => {
 		const result = await user.save();
 
 		res.render("home/registrationForm", {
+			siteKey: config.recaptcha.siteKey,
 			errorMessage: "Your Account is activated successfully.",
 			type: "success",
 		});
@@ -81,6 +86,7 @@ exports.recoverPassword = async (req, res, next) => {
 		const token = await req.params.token;
 		if (!token) {
 			return res.render("home/registrationForm", {
+				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Broken. Please request for a new link.",
 				type: "error",
 			});
@@ -92,12 +98,14 @@ exports.recoverPassword = async (req, res, next) => {
 		});
 		if (!user) {
 			return rres.render("home/registrationForm", {
+				siteKey: config.recaptcha.siteKey,
 				errorMessage: "No User Found",
 				type: "error",
 			});
 		}
 		if (user.passwordTokenExpiration < new Date(Date.now())) {
 			return res.render("home/registrationForm", {
+				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Expired. Please request for a new link.",
 				type: "error",
 			});
