@@ -6,6 +6,8 @@ const { validationResult } = require("express-validator");
 const config = require("../../config");
 const AccessControll = require("accesscontrol");
 
+const ITEMS_PER_PAGE = 4;
+
 // Initializing AccessControll
 const ac = new AccessControll(config.grantsObject);
 
@@ -181,6 +183,31 @@ exports.updatePost = async (req, res, next) => {
 			error.statusCode = 405;
 			throw error;
 		}
+	} catch (err) {
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+	}
+};
+
+exports.getPaginatedPosts = async (req, res, next) => {
+	try {
+		const page = +req.query.page || 1;
+		let totalItems = await Post.count();
+		const posts = await Post.findAll({
+			limit: ITEMS_PER_PAGE,
+			offset: (page - 1) * ITEMS_PER_PAGE,
+		});
+		res.status(200).json({
+			posts: posts,
+			currentPage: page,
+			hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+			hasPreviousPage: page > 1,
+			nextPage: page + 1,
+			previousPage: page - 1,
+			lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+		});
 	} catch (err) {
 		if (!err.statusCode) {
 			err.statusCode = 500;

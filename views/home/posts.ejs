@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<%- include('../includes/head.ejs') %>
+		<style>
+			.news-container {
+				grid-template-columns: 1fr 1fr 1fr 1fr;
+				margin-bottom: 40px;
+			}
+			.product-title {
+				text-align: center;
+				font-size: 18px;
+			}
+			.main-content {
+				padding-top: 30px;
+			}
+			.news-card-img {
+				height: 150px;
+			}
+			.pagination {
+				padding-bottom: 30px;
+			}
+		</style>
+	</head>
+	<title>Posts</title>
+	<body>
+		<!-- Navigation Bar -->
+		<%- include('../includes/navbar.ejs') %>
+
+		<!-- Top black Square, as background of navigation bar (white font-color) -->
+		<div style="width: 100%; height: 100px; background-color: rgba(0, 0, 0, 1);"></div>
+
+		<!-- Page Content -->
+		<div class="container">
+			<div class="row">
+				<!-- Main Content -->
+				<div class="col-lg-12 main-content">
+					<!-- News Section -->
+					<div id="container" class="container-fluid"></div>
+					<!-- End News Section -->
+				</div>
+				<!-- End Main Content -->
+			</div>
+		</div>
+		<!-- End Page Content -->
+
+		<!-- Footer -->
+		<%- include('../includes/footer.ejs') %>
+
+		<!-- Scripts -->
+		<%- include('../includes/end.ejs') %>
+		<script src="/js/posts-page-scripts.js" charset="utf-8"></script>
+		<script src="/js/main-scripts.js" charset="utf-8"></script>
+	</body>
+</html>

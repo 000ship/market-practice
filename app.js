@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const multer = require("multer");
 const config = require("./config");
-// const flash = require("connect-flash");
 
 const Post = require("./models/post");
 const User = require("./models/user");

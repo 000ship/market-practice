@@ -23,6 +23,10 @@ $(function () {
 						if (data.name) {
 							$("#memberName").text(data.name);
 						}
+						$("#total-posts").text(data.totalPosts);
+						$("#total-products").text(data.totalProducts);
+						$("#total-views").text(data.totalViews);
+						$("#total-members").text(data.totalMembers);
 						// populate user info form
 						$.ajax({
 							url: "http://localhost:3000/auth/getUserInfo/" + userId,

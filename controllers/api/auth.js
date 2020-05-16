@@ -1,5 +1,7 @@
 const { validationResult } = require("express-validator");
 const User = require("../../models/user");
+const Post = require("../../models/post");
+const Product = require("../../models/product");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
@@ -107,11 +109,19 @@ exports.getStatus = async (req, res, next) => {
 		}
 
 		const user = await User.findByPk(decodedToken.userId);
+		let totalPosts = await Post.count();
+		let totalProducts = await Product.count();
+		let totalMembers = await User.count();
+
 		res.status(200).json({
 			message: "fetched succesfully!",
 			userId: user.id,
 			imageUrl: user.imageUrl,
 			name: user.name,
+			totalPosts: totalPosts,
+			totalProducts: totalProducts,
+			totalViews: 1000,
+			totalMembers: totalMembers,
 			isValid: Date.now() <= decodedToken.exp * 1000,
 		});
 	} catch (err) {

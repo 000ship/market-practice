@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get("/posts", isAuth, apiController.getPosts);
 router.get("/post/:postId", isAuth, apiController.getPost);
+router.get("/paginatedPosts", apiController.getPaginatedPosts);
 router.post(
 	"/post",
 	isAuth,

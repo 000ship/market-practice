@@ -11,6 +11,10 @@ exports.getProducts = async (req, res, next) => {
 	res.render("home/products");
 };
 
+exports.getPosts = async (req, res, next) => {
+	res.render("home/posts");
+};
+
 exports.getCart = async (req, res, next) => {
 	res.render("home/cart");
 };

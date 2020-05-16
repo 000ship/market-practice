@@ -3,8 +3,13 @@ const path = require("path");
 const Product = require("../../models/product");
 const User = require("../../models/user");
 const { validationResult } = require("express-validator");
+const config = require("../../config");
+const AccessControll = require("accesscontrol");
 
 const ITEMS_PER_PAGE = 4;
+
+// Initializing AccessControll
+const ac = new AccessControll(config.grantsObject);
 
 exports.getProducts = async (req, res, next) => {
 	try {
