@@ -13,12 +13,6 @@ const CartItem = require("./models/cart-item");
 const Order = require("./models/order");
 const OrderItem = require("./models/order-item");
 
-const sitemap = require("express-sitemap")({
-	sitemap: "public/sitemap.xml",
-	url: "localhost",
-	post: "3000",
-});
-
 const app = express();
 
 // multer
@@ -97,10 +91,6 @@ Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
 User.hasMany(Order);
 Order.belongsToMany(Product, { through: OrderItem });
-
-// Generating sitemap
-sitemap.generate4(app, ["/", "/auth"]);
-sitemap.XMLtoFile();
 
 // sequelize
 // .sync({ force: true })
