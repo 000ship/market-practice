@@ -1,7 +1,9 @@
 const User = require("../models/user");
 const Product = require("../models/product");
+const Post = require("../models/post");
 const config = require("../config");
 const sm = require("sitemap");
+const RSS = require("rss");
 
 const ITEMS_PER_PAGE = 4;
 exports.getIndex = (req, res, next) => {
@@ -141,6 +143,65 @@ exports.recoverPassword = async (req, res, next) => {
 			userId: user.id,
 			email: user.email,
 		});
+	} catch (err) {
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
+};
+
+exports.feedProducts = async (req, res, next) => {
+	try {
+		//
+		let feed = new RSS({
+			title: "Market Practice Products RSS Feed",
+			description: "Beware of dicounts and special offers.",
+			feed_url: `${config.app.website} + ':' + ${config.app.port}/feed/products`,
+			site_url: config.app.website + ":" + config.app.port,
+		});
+		let products = await Product.findAll({ include: ["user"] });
+		products.forEach((product) => {
+			feed.item({
+				title: product.title,
+				description: product.content,
+				author: product.user.name,
+				price: product.price,
+				date: product.createdAt,
+			});
+		});
+
+		console.log(feed);
+		res.header("Content-type", "application/xml");
+		res.send(feed.xml());
+	} catch (err) {
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
+};
+
+exports.feedPosts = async (req, res, next) => {
+	try {
+		//
+		let feed = new RSS({
+			title: "Market Practice Posts RSS Feed",
+			description: "Get the best Articles.",
+			feed_url: `${config.app.website} + ':' + ${config.app.port}/feed/posts`,
+			site_url: config.app.website + ":" + config.app.port,
+		});
+		let posts = await Post.findAll({ include: ["user"] });
+		posts.forEach((post) => {
+			feed.item({
+				title: post.title,
+				author: post.user.name,
+				description: post.content,
+				date: post.createdAt,
+			});
+		});
+
+		console.log(feed);
+		res.header("Content-type", "application/xml");
+		res.send(feed.xml());
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;

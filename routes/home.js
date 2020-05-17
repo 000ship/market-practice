@@ -15,5 +15,8 @@ router.get("/recoverPassword/:token", homeController.recoverPassword);
 router.get("/cart", homeController.getCart);
 router.get("/orders", homeController.getOrders);
 router.get("/sitemap.xml", homeController.getSitemap);
+// RSS Feed
+router.get("/feed/posts", homeController.feedPosts);
+router.get("/feed/products", homeController.feedProducts);
 
 module.exports = router;
