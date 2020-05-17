@@ -26,7 +26,11 @@
 		"request": "^2.88.2",
 		"request-promise": "^4.2.5",
 		"sequelize": "^5.21.7",
-		"socket.io": "^2.3.0"
+		"sitemap": "^1.13.0",
+		"socket.io": "^2.3.0",
+		"stream-json": "^1.5.0",
+		"through2-map": "^3.0.0",
+		"zlib": "^1.0.5"
 	},
 	"devDependencies": {
 		"chai": "^4.2.0",

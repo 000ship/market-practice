@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Product = require("../models/product");
 const config = require("../config");
+const sm = require("sitemap");
 
 const ITEMS_PER_PAGE = 4;
 exports.getIndex = (req, res, next) => {
@@ -27,7 +28,22 @@ exports.getOrders = async (req, res, next) => {
 };
 
 exports.getSitemap = async (req, res, next) => {
-	res.send("/public/sitemap.xml");
+	try {
+		let sitemap = sm.createSitemap({
+			hostname: config.app.website + ":" + config.app.port,
+			// cacheTime: 600000
+		});
+		sitemap.add({ url: "/", changeFreq: "daily", priority: 1 });
+		sitemap.add({ url: "/posts", priority: 1 });
+		sitemap.add({ url: "/products", priority: 1 });
+
+		res.header("Content-type", "application/xml");
+		res.send(sitemap.toString());
+	} catch (err) {
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
 };
 
 exports.getRegistration = (req, res, next) => {
