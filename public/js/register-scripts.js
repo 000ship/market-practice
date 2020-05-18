@@ -3,6 +3,10 @@ function onHuman(response) {
 }
 
 $(function () {
+	// Hiding wome menu items
+	$("#cart-navbar").hide();
+	$("#order-navbar").hide();
+
 	// Resize $ Change Background on Scroll
 	$(document).scroll(function () {
 		var $nav = $(".navbar-fixed-top");
