@@ -9,6 +9,7 @@ const https = require("https");
 const cookieParser = require("cookie-parser");
 const csrf = require("csurf");
 const helmet = require("helmet");
+const i18n = require("i18n");
 
 const Post = require("./models/post");
 const User = require("./models/user");
@@ -55,7 +56,6 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-// app.use(flash());
 // View routes
 const adminRoutes = require("./routes/admin");
 const homeRoutes = require("./routes/home");
@@ -75,8 +75,33 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(paymentRoutes);
 
 // Cookie Parser & CSRF
-app.use(cookieParser());
+app.use(cookieParser(config.cookie.secret));
 app.use(csrf({ cookie: true }));
+
+// i18n configurations
+i18n.configure({
+	locales: ["en", "fa"],
+	directory: __dirname + "/locales",
+	cookie: "lang",
+	defaultLocale: "en",
+});
+
+app.use(i18n.init);
+
+// Lang Middleware
+app.use((req, res, next) => {
+	try {
+		let lang = req.signedCookies.lang;
+		if (i18n.getLocales().includes(lang)) {
+			req.setLocale(lang);
+		} else {
+			req.setLocale(i18n.getLocale());
+		}
+		next();
+	} catch (err) {
+		next(err);
+	}
+});
 
 // Using routes
 app.use("/admin", adminRoutes);
