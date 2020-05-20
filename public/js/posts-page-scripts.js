@@ -1,6 +1,6 @@
 $(function () {
 	let wrapper = $("#container");
-	const url = "http://localhost:3000/paginatedPosts?page=";
+	const url = "https://localhost:3000/paginatedPosts?page=";
 	const page = new URLSearchParams(window.location.search).get("page");
 	// Populating page
 	$.ajax({
@@ -55,7 +55,7 @@ $(function () {
 
 		// Adding product to cart
 		$.ajax({
-			url: "http://localhost:3000/addToCart",
+			url: "https://localhost:3000/addToCart",
 			type: "post",
 			processData: false,
 			contentType: false,

@@ -13,7 +13,7 @@ $(function () {
 	function updateNavbar() {
 		if (localStorage.getItem("token")) {
 			$.ajax({
-				url: "http://localhost:3000/auth/getStatus",
+				url: "https://localhost:3000/auth/getStatus",
 				headers: {
 					Authorization: "bearer " + localStorage.getItem("token"),
 				},
@@ -30,7 +30,7 @@ $(function () {
 						$("#total-members").text(data.totalMembers);
 						// populate user info form
 						$.ajax({
-							url: "http://localhost:3000/auth/getUserInfo/" + userId,
+							url: "https://localhost:3000/auth/getUserInfo/" + userId,
 							headers: {
 								Authorization: "bearer " + localStorage.getItem("token"),
 							},
@@ -61,7 +61,7 @@ $(function () {
 	// Populating Table
 	var table = $("#postTable").DataTable({
 		ajax: {
-			url: "http://localhost:3000/posts",
+			url: "https://localhost:3000/posts",
 			dataSrc: "",
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
@@ -76,7 +76,7 @@ $(function () {
 				render: function (data) {
 					return (
 						"<img class='img-rounded img-responsive' src='" +
-						"http://localhost:3000/" +
+						"https://localhost:3000/" +
 						data +
 						"'/>"
 					);
@@ -119,7 +119,7 @@ $(function () {
 			if (postButton) {
 				// edit
 				$.ajax({
-					url: "http://localhost:3000/post/" + postButton.attr("data-post-id"),
+					url: "https://localhost:3000/post/" + postButton.attr("data-post-id"),
 					type: "put",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
@@ -143,7 +143,7 @@ $(function () {
 			} else {
 				// add
 				$.ajax({
-					url: "http://localhost:3000/post",
+					url: "https://localhost:3000/post",
 					type: "post",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
@@ -175,7 +175,7 @@ $(function () {
 		var button = $(this);
 		alertify.confirm("Are you sure, you want to delete this post?", function () {
 			$.ajax({
-				url: "http://localhost:3000/post/" + button.attr("data-post-id"),
+				url: "https://localhost:3000/post/" + button.attr("data-post-id"),
 				method: "DELETE",
 				headers: {
 					Authorization: "bearer " + localStorage.getItem("token"),
@@ -200,7 +200,7 @@ $(function () {
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},
-			url: "http://localhost:3000/post/" + postButton.attr("data-post-id"),
+			url: "https://localhost:3000/post/" + postButton.attr("data-post-id"),
 			success: function (data) {
 				$("#post-title-input").val(data.title);
 				$("#post-content-input").val(data.content);
@@ -239,7 +239,7 @@ $(function () {
 	// Populating Product Table
 	var productTable = $("#productTable").DataTable({
 		ajax: {
-			url: "http://localhost:3000/products",
+			url: "https://localhost:3000/products",
 			dataSrc: "",
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
@@ -254,7 +254,7 @@ $(function () {
 				render: function (data) {
 					return (
 						"<img class='img-rounded img-responsive' src='" +
-						"http://localhost:3000/" +
+						"https://localhost:3000/" +
 						data +
 						"'/>"
 					);
@@ -314,7 +314,7 @@ $(function () {
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},
-			url: "http://localhost:3000/product/" + productButton.attr("data-product-id"),
+			url: "https://localhost:3000/product/" + productButton.attr("data-product-id"),
 			success: function (data) {
 				$("#product-title-input").val(data.title);
 				$("#product-content-input").val(data.content);
@@ -343,7 +343,7 @@ $(function () {
 			if (productButton) {
 				// edit
 				$.ajax({
-					url: "http://localhost:3000/product/" + productButton.attr("data-product-id"),
+					url: "https://localhost:3000/product/" + productButton.attr("data-product-id"),
 					type: "put",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
@@ -367,7 +367,7 @@ $(function () {
 			} else {
 				// add
 				$.ajax({
-					url: "http://localhost:3000/product",
+					url: "https://localhost:3000/product",
 					type: "post",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
@@ -399,7 +399,7 @@ $(function () {
 		var button = $(this);
 		alertify.confirm("Are you sure, you want to delete this Product?", function () {
 			$.ajax({
-				url: "http://localhost:3000/product/" + button.attr("data-product-id"),
+				url: "https://localhost:3000/product/" + button.attr("data-product-id"),
 				method: "DELETE",
 				headers: {
 					Authorization: "bearer " + localStorage.getItem("token"),
@@ -431,7 +431,7 @@ $(function () {
 		var formData = new FormData($("#user-info-form")[0]);
 		console.log(formData);
 		$.ajax({
-			url: "http://localhost:3000/auth/updateUserInfo/" + userId,
+			url: "https://localhost:3000/auth/updateUserInfo/" + userId,
 			type: "put",
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
@@ -463,7 +463,7 @@ $(function () {
 				data.append("id", userId);
 				data.append("password", value);
 				$.ajax({
-					url: "http://localhost:3000/auth/recoverPassword",
+					url: "https://localhost:3000/auth/recoverPassword",
 					type: "PUT",
 					processData: false,
 					contentType: false,

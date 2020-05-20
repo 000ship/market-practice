@@ -5,7 +5,7 @@ $(function () {
 	// Update navbar profile pic & buttons if there's a logged in user
 	if (localStorage.getItem("token")) {
 		$.ajax({
-			url: "http://localhost:3000/auth/getStatus",
+			url: "https://localhost:3000/auth/getStatus",
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},

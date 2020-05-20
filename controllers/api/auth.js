@@ -311,13 +311,13 @@ const sendEmail = (to, token, method) => {
 		subject = "Account Confirmation";
 		html = `
 		<h1>Congradulations ...</h1>
-		<p>Click this <a href="http://localhost:3000/confirmEmail/${token}">Link</a> to confirm your email address.</p>
+		<p>Click this <a href="https://localhost:3000/confirmEmail/${token}">Link</a> to confirm your email address.</p>
 		`;
 	} else if (method === "recover") {
 		subject = "Password Recovery";
 		html = `
 		<h1>Forgot your password!? No Problem .....</h1>
-		<p>Just click this <a href="http://localhost:3000/recoverPassword/${token}">Link</a> to get a new one.</p>
+		<p>Just click this <a href="https://localhost:3000/recoverPassword/${token}">Link</a> to get a new one.</p>
 		`;
 	}
 

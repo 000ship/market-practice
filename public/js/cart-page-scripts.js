@@ -6,7 +6,7 @@ $(function () {
 		ordering: false,
 		searching: false,
 		ajax: {
-			url: "http://localhost:3000/getCart",
+			url: "https://localhost:3000/getCart",
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
 			},
@@ -18,7 +18,7 @@ $(function () {
 				render: function (data) {
 					return (
 						"<img class='img-rounded img-responsive' src='" +
-						"http://localhost:3000/" +
+						"https://localhost:3000/" +
 						data +
 						"'/>"
 					);
@@ -54,29 +54,4 @@ $(function () {
 		$("#invoice-total").text(totalAmount);
 		$("#userId").val(userId);
 	});
-
-	// // Checkout Button
-	// $("#checkout-btn").on("click", function (e) {
-	// 	e.preventDefault();
-	// 	alertify.confirm(
-	// 		"Continue to the payment page?",
-	// 		function () {
-	// 			var data = new FormData();
-	// 			data.append("total", totalAmount);
-	// 			$.ajax({
-	// 				url: "http://localhost:3000/checkout",
-	// 				type: "post",
-	// 				processData: false,
-	// 				contentType: false,
-	// 				data: data,
-	// 				headers: {
-	// 					Authorization: "bearer " + localStorage.getItem("token"),
-	// 				},
-	// 			});
-	// 		},
-	// 		function () {
-	// 			alertify.error("Canceled");
-	// 		}
-	// 	);
-	// });
 });

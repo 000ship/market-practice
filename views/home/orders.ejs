@@ -59,7 +59,7 @@
 				var table = $("#orders-table").DataTable({
 					searching: false,
 					ajax: {
-						url: "http://localhost:3000/getOrders",
+						url: "https://localhost:3000/getOrders",
 						headers: {
 							Authorization: "bearer " + localStorage.getItem("token"),
 						},

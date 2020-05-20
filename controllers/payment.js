@@ -82,7 +82,7 @@ var payment = async function (type, email, total, Authority) {
 		params = {
 			MerchantID: config.payment.merchantID,
 			Amount: total,
-			CallbackURL: "http://localhost:3000/paymentChecker",
+			CallbackURL: "https://localhost:3000/paymentChecker",
 			Description: "For Buying Products",
 			Email: email,
 		};

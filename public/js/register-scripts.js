@@ -56,7 +56,7 @@ $(function () {
 				alertify.error("Please verify that you are a human!");
 			} else {
 				$.ajax({
-					url: "http://localhost:3000/auth/signup",
+					url: "https://localhost:3000/auth/signup",
 					type: "PUT",
 					headers: { "CSRF-Token": token },
 					processData: false,
@@ -89,7 +89,7 @@ $(function () {
 				alertify.error("Please verify that you are a human!");
 			} else {
 				$.ajax({
-					url: "http://localhost:3000/auth/login",
+					url: "https://localhost:3000/auth/login",
 					type: "POST",
 					headers: { "CSRF-Token": token },
 					processData: false,
@@ -122,7 +122,7 @@ $(function () {
 				var data = new FormData();
 				data.append("email", value);
 				$.ajax({
-					url: "http://localhost:3000/auth/sendConfirmEmail",
+					url: "https://localhost:3000/auth/sendConfirmEmail",
 					type: "PUT",
 					headers: { "CSRF-Token": token },
 					processData: false,
@@ -153,7 +153,7 @@ $(function () {
 				var data = new FormData();
 				data.append("email", value);
 				$.ajax({
-					url: "http://localhost:3000/auth/sendPasswordEmail",
+					url: "https://localhost:3000/auth/sendPasswordEmail",
 					type: "PUT",
 					headers: { "CSRF-Token": token },
 					processData: false,
@@ -182,7 +182,7 @@ $(function () {
 
 		if ($("#password-recovery-form").valid()) {
 			$.ajax({
-				url: "http://localhost:3000/auth/recoverPassword",
+				url: "https://localhost:3000/auth/recoverPassword",
 				type: "PUT",
 				headers: { "CSRF-Token": token },
 				processData: false,
