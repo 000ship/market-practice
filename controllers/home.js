@@ -4,30 +4,39 @@ const Post = require("../models/post");
 const config = require("../config");
 const sm = require("sitemap");
 const RSS = require("rss");
+const i18n = require("i18n");
 
 const ITEMS_PER_PAGE = 4;
 exports.getIndex = (req, res, next) => {
-	res.render("home/index");
+	res.render("home/index", {
+		req: req,
+	});
 };
 
 exports.getProducts = async (req, res, next) => {
 	res.render("home/products", {
 		csrfToken: req.csrfToken(),
+		req: req,
 	});
 };
 
 exports.getPosts = async (req, res, next) => {
-	res.render("home/posts");
+	res.render("home/posts", {
+		req: req,
+	});
 };
 
 exports.getCart = async (req, res, next) => {
-	res.render("home/cart");
+	res.render("home/cart", {
+		req: req,
+	});
 };
 
 exports.getOrders = async (req, res, next) => {
 	res.render("home/orders", {
 		errorMessage: "",
 		type: "",
+		req: req,
 	});
 };
 
@@ -55,6 +64,7 @@ exports.getRegistration = (req, res, next) => {
 		siteKey: config.recaptcha.siteKey,
 		errorMessage: null,
 		csrfToken: req.csrfToken(),
+		req: req,
 	});
 };
 
@@ -66,6 +76,7 @@ exports.confirmEmail = async (req, res, next) => {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Broken. Please request for a new link.",
 				type: "error",
+				req: req,
 			});
 		}
 		let user = await User.findOne({
@@ -78,6 +89,7 @@ exports.confirmEmail = async (req, res, next) => {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "No User Found",
 				type: "error",
+				req: req,
 			});
 		}
 		if (user.status === true) {
@@ -85,6 +97,7 @@ exports.confirmEmail = async (req, res, next) => {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "You are already activated.",
 				type: "success",
+				req: req,
 			});
 		}
 		if (user.emailTokenExpiration < new Date(Date.now())) {
@@ -92,6 +105,7 @@ exports.confirmEmail = async (req, res, next) => {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Expired. Please request for a new link.",
 				type: "error",
+				req: req,
 			});
 		}
 
@@ -102,6 +116,7 @@ exports.confirmEmail = async (req, res, next) => {
 			siteKey: config.recaptcha.siteKey,
 			errorMessage: "Your Account is activated successfully.",
 			type: "success",
+			req: req,
 		});
 	} catch (err) {
 		const error = new Error(err);
@@ -118,6 +133,7 @@ exports.recoverPassword = async (req, res, next) => {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Broken. Please request for a new link.",
 				type: "error",
+				req: req,
 			});
 		}
 		let user = await User.findOne({
@@ -130,6 +146,7 @@ exports.recoverPassword = async (req, res, next) => {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "No User Found",
 				type: "error",
+				req: req,
 			});
 		}
 		if (user.passwordTokenExpiration < new Date(Date.now())) {
@@ -137,6 +154,7 @@ exports.recoverPassword = async (req, res, next) => {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "Link is Expired. Please request for a new link.",
 				type: "error",
+				req: req,
 			});
 		}
 
@@ -146,6 +164,7 @@ exports.recoverPassword = async (req, res, next) => {
 			userId: user.id,
 			email: user.email,
 			csrfToken: req.csrfToken(),
+			req: req,
 		});
 	} catch (err) {
 		const error = new Error(err);
@@ -211,4 +230,14 @@ exports.feedPosts = async (req, res, next) => {
 		error.httpStatusCode = 500;
 		return next(error);
 	}
+};
+
+exports.setLanguage = async (req, res, next) => {
+	let lang = req.params.lang;
+	console.log(lang);
+	if (i18n.getLocales().includes(lang)) {
+		res.cookie("lang", lang, { maxAge: 1000 * 60 * 60 * 24 * 90, signed: true }); // 90 days
+	}
+	// Return to the page that is coming from
+	res.redirect(req.header("Referer") || "/");
 };

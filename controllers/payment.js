@@ -50,6 +50,7 @@ exports.paymentChecker = async (req, res, next) => {
 			return res.render("home/orders", {
 				errorMessage: "No Order Found!",
 				type: "error",
+				req: req,
 			});
 		}
 		// Verifying the payment
@@ -60,17 +61,20 @@ exports.paymentChecker = async (req, res, next) => {
 			return res.render("home/orders", {
 				errorMessage: "Payment was Successful!",
 				type: "success",
+				req: req,
 			});
 		} else {
 			return res.render("home/orders", {
 				errorMessage: "Payment was not Successful!",
 				type: "error",
+				req: req,
 			});
 		}
 	} catch (err) {
 		res.render("home/orders", {
 			errorMessage: "Payment was Unsuccessful!",
 			type: "error",
+			req: req,
 		});
 	}
 };
