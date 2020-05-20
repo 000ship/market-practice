@@ -6,6 +6,7 @@ const multer = require("multer");
 const config = require("./config");
 const cookieParser = require("cookie-parser");
 const csrf = require("csurf");
+const helmet = require("helmet");
 
 const Post = require("./models/post");
 const User = require("./models/user");
@@ -16,7 +17,7 @@ const Order = require("./models/order");
 const OrderItem = require("./models/order-item");
 
 const app = express();
-
+app.use(helmet());
 // multer
 const fileStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
