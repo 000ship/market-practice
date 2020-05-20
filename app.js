@@ -2,8 +2,10 @@ const express = require("express");
 const sequelize = require("./util/database");
 const bodyParser = require("body-parser");
 const path = require("path");
+const fs = require("fs");
 const multer = require("multer");
 const config = require("./config");
+const https = require("https");
 const cookieParser = require("cookie-parser");
 const csrf = require("csurf");
 const helmet = require("helmet");
@@ -16,6 +18,11 @@ const CartItem = require("./models/cart-item");
 const Order = require("./models/order");
 const OrderItem = require("./models/order-item");
 
+// HTTPS Options
+const httpsOptions = {
+	key: fs.readFileSync("./ssl/key.pem"),
+	cert: fs.readFileSync("./ssl/cert.pem"),
+};
 const app = express();
 app.use(helmet());
 // multer
@@ -105,6 +112,7 @@ Order.belongsToMany(Product, { through: OrderItem });
 sequelize
 	.sync()
 	.then((result) => {
-		app.listen(config.app.port);
+		// app.listen(config.app.port);
+		https.createServer(httpsOptions, app).listen(config.app.port);
 	})
 	.catch((err) => console.log(err));
