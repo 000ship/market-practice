@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const multer = require("multer");
 const config = require("./config");
+const cookieParser = require("cookie-parser");
+const csrf = require("csurf");
 
 const Post = require("./models/post");
 const User = require("./models/user");
@@ -61,11 +63,16 @@ const apiAuthRoutes = require("./routes/api/auth");
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
+// Using routes (before CSRF, meaning don't validate with CSRF)
+app.use(paymentRoutes);
+
+// Cookie Parser & CSRF
+app.use(cookieParser());
+app.use(csrf({ cookie: true }));
+
 // Using routes
 app.use("/admin", adminRoutes);
 app.use(homeRoutes);
-app.use(paymentRoutes);
-
 app.use(apiPostRoutes);
 app.use(apiProductRoutes);
 app.use(apiCartRoutes);
