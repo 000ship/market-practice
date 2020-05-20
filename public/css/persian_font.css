@@ -1,0 +1,13 @@
+@font-face {
+	font-family: shabnam;
+	src: url("../fonts/samim-font-v2.0.1/Samim.eot");
+	src: url("../fonts/samim-font-v2.0.1/Samim.eot?#iefix") format("FontName-opentype"),
+		url("../fonts/samim-font-v2.0.1/Samim.woff") format("woff"),
+		url("../fonts/samim-font-v2.0.1/Samim.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	font-family: shabnam;
+}
