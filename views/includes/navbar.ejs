@@ -2,7 +2,7 @@
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<a href="/" class="navbar-brand" style="font-size: 20px; margin-right: 15px;"
-				>Market Practice</a
+				><%= __('title') %></a
 			>
 			<Button
 				type="button"
@@ -14,11 +14,11 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbar_items">
 			<ul class="nav navbar-nav">
-				<li><a href="/postsPage">Posts</a></li>
-				<li><a id="products_navbar" href="/productsPage">Products</a></li>
-				<li id="cart-navbar"><a href="/cart">Cart</a></li>
-				<li id="order-navbar"><a href="/orders">Orders</a></li>
-				<li id="order-navbar"><a href="/sitemap.xml">Sitemap</a></li>
+				<li><a href="/postsPage"><%= __('posts') %></a></li>
+				<li><a id="products_navbar" href="/productsPage"><%= __('products') %></a></li>
+				<li id="cart-navbar"><a href="/cart"><%= __('cart') %></a></li>
+				<li id="order-navbar"><a href="/orders"><%= __('orders') %></a></li>
+				<li id="order-navbar"><a href="/sitemap.xml"><%= __('sitemap') %></a></li>
 				<li class="dropdown">
 					<a
 						href="#"
@@ -27,17 +27,17 @@
 						role="button"
 						aria-haspopup="true"
 						aria-expanded="false"
-						>RSS <span class="caret"></span
+						><%= __('rss') %> <span class="caret"></span
 					></a>
 					<ul class="dropdown-menu">
-						<li id="order-navbar"><a href="/feed/posts">Posts</a></li>
-						<li id="order-navbar"><a href="/feed/products">Products</a></li>
+						<li id="order-navbar"><a href="/feed/posts"><%= __('posts') %></a></li>
+						<li id="order-navbar"><a href="/feed/products"><%= __('products') %></a></li>
 					</ul>
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<form class="header-search-container" action="#">
-					<input type="text" class="header-search-input" placeholder="Type to Search..." />
+					<input type="text" class="header-search-input" placeholder="<%= __('search') %>" />
 					<img class="header-search-icon" src="/images/search.png" alt="" />
 				</form>
 
@@ -47,7 +47,7 @@
 				<a href="/lang/fa"><img style="width: 40px;" src="/images/lang/en.png" alt="en" /></a>
 				<% } %>
 				<a id="registerBtn" class="btn btn-link" href="/registerForm" style="color: white;"
-					>Sign-in / Sign-up</a
+					><%= __('sign') %></a
 				>
 				<a id="main-img-author-link"
 					><img

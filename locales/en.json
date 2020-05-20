@@ -1,3 +1,11 @@
 {
-	"title": "Market Practice"
+	"title": "Market Practice",
+	"posts": "Posts",
+	"products": "Products",
+	"cart": "Cart",
+	"orders": "Orders",
+	"sitemap": "Sitemap",
+	"rss": "RSS",
+	"search": "Type to Search...",
+	"sign": "Sign-in / Sign-up"
 }
