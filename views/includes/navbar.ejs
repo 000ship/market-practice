@@ -36,15 +36,16 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<div class="weather" style="font-size: 20px;">
-					<span class="temparature">+10°</span>
-					<img class="weather-icon" src="/images/cloud.png" alt="" />
-				</div>
 				<form class="header-search-container" action="#">
 					<input type="text" class="header-search-input" placeholder="Type to Search..." />
 					<img class="header-search-icon" src="/images/search.png" alt="" />
 				</form>
 
+				<% if(req.getLocale() == 'fa'){ %>
+				<a href="/lang/en"><img style="width: 40px;" src="/images/lang/fa.png" alt="en" /></a>
+				<% } else if(req.getLocale() == 'en'){ %>
+				<a href="/lang/fa"><img style="width: 40px;" src="/images/lang/en.png" alt="en" /></a>
+				<% } %>
 				<a id="registerBtn" class="btn btn-link" href="/registerForm" style="color: white;"
 					>Sign-in / Sign-up</a
 				>

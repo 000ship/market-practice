@@ -18,5 +18,6 @@ router.get("/sitemap.xml", homeController.getSitemap);
 // RSS Feed
 router.get("/feed/posts", homeController.feedPosts);
 router.get("/feed/products", homeController.feedProducts);
+router.get("/lang/:lang", homeController.setLanguage);
 
 module.exports = router;
