@@ -3,6 +3,7 @@ function onHuman(response) {
 }
 
 $(function () {
+	var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 	// Hiding wome menu items
 	$("#cart-navbar").hide();
 	$("#order-navbar").hide();
@@ -57,6 +58,7 @@ $(function () {
 				$.ajax({
 					url: "http://localhost:3000/auth/signup",
 					type: "PUT",
+					headers: { "CSRF-Token": token },
 					processData: false,
 					contentType: false,
 					data: formData,
@@ -89,6 +91,7 @@ $(function () {
 				$.ajax({
 					url: "http://localhost:3000/auth/login",
 					type: "POST",
+					headers: { "CSRF-Token": token },
 					processData: false,
 					contentType: false,
 					data: formData,
@@ -121,6 +124,7 @@ $(function () {
 				$.ajax({
 					url: "http://localhost:3000/auth/sendConfirmEmail",
 					type: "PUT",
+					headers: { "CSRF-Token": token },
 					processData: false,
 					contentType: false,
 					data: data,
@@ -151,6 +155,7 @@ $(function () {
 				$.ajax({
 					url: "http://localhost:3000/auth/sendPasswordEmail",
 					type: "PUT",
+					headers: { "CSRF-Token": token },
 					processData: false,
 					contentType: false,
 					data: data,
@@ -179,6 +184,7 @@ $(function () {
 			$.ajax({
 				url: "http://localhost:3000/auth/recoverPassword",
 				type: "PUT",
+				headers: { "CSRF-Token": token },
 				processData: false,
 				contentType: false,
 				data: formData,

@@ -2,6 +2,7 @@ $(function () {
 	let wrapper = $("#container");
 	const url = "http://localhost:3000/paginatedProducts?page=";
 	const page = new URLSearchParams(window.location.search).get("page");
+	var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 	// Populating page
 	$.ajax({
 		url: url + page,
@@ -71,6 +72,7 @@ $(function () {
 			data: data,
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
+				"CSRF-Token": token,
 			},
 			success: (xhr) => {
 				alertify.success("Added To Cart");

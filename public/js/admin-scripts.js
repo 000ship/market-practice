@@ -6,6 +6,7 @@ $(function () {
 	var postForm = $("#postForm")[0]; // this [0] Is super important (took about 3 days to figure out)
 	var productForm = $("#productForm")[0]; // this [0] Is super important (took about 3 days to figure out)
 	let userId = null;
+	var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 	updateNavbar();
 
 	// Update navbar profile pic & Text
@@ -122,6 +123,7 @@ $(function () {
 					type: "put",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
+						"CSRF-Token": token,
 					},
 					enctype: "multipart/form-data",
 					contentType: false,
@@ -145,6 +147,7 @@ $(function () {
 					type: "post",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
+						"CSRF-Token": token,
 					},
 					enctype: "multipart/form-data",
 					contentType: false,
@@ -176,6 +179,7 @@ $(function () {
 				method: "DELETE",
 				headers: {
 					Authorization: "bearer " + localStorage.getItem("token"),
+					"CSRF-Token": token,
 				},
 				success: function () {
 					table.row(button.parents("tr")).remove().draw();
@@ -343,6 +347,7 @@ $(function () {
 					type: "put",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
+						"CSRF-Token": token,
 					},
 					enctype: "multipart/form-data",
 					contentType: false,
@@ -366,6 +371,7 @@ $(function () {
 					type: "post",
 					headers: {
 						Authorization: "bearer " + localStorage.getItem("token"),
+						"CSRF-Token": token,
 					},
 					enctype: "multipart/form-data",
 					contentType: false,
@@ -397,6 +403,7 @@ $(function () {
 				method: "DELETE",
 				headers: {
 					Authorization: "bearer " + localStorage.getItem("token"),
+					"CSRF-Token": token,
 				},
 				success: function (xhr) {
 					productTable.row(button.parents("tr")).remove().draw();
@@ -428,6 +435,7 @@ $(function () {
 			type: "put",
 			headers: {
 				Authorization: "bearer " + localStorage.getItem("token"),
+				"CSRF-Token": token,
 			},
 			contentType: false,
 			processData: false, //important

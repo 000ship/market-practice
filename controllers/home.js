@@ -11,7 +11,9 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getProducts = async (req, res, next) => {
-	res.render("home/products");
+	res.render("home/products", {
+		csrfToken: req.csrfToken(),
+	});
 };
 
 exports.getPosts = async (req, res, next) => {
@@ -52,6 +54,7 @@ exports.getRegistration = (req, res, next) => {
 	res.render("home/registrationForm", {
 		siteKey: config.recaptcha.siteKey,
 		errorMessage: null,
+		csrfToken: req.csrfToken(),
 	});
 };
 
@@ -123,7 +126,7 @@ exports.recoverPassword = async (req, res, next) => {
 			},
 		});
 		if (!user) {
-			return rres.render("home/registrationForm", {
+			return res.render("home/registrationForm", {
 				siteKey: config.recaptcha.siteKey,
 				errorMessage: "No User Found",
 				type: "error",
@@ -142,6 +145,7 @@ exports.recoverPassword = async (req, res, next) => {
 			type: "success",
 			userId: user.id,
 			email: user.email,
+			csrfToken: req.csrfToken(),
 		});
 	} catch (err) {
 		const error = new Error(err);
