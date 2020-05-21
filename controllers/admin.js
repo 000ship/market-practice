@@ -27,3 +27,10 @@ exports.getProducts = (req, res, next) => {
 		req: req,
 	});
 };
+
+exports.getUsers = (req, res, next) => {
+	res.render("admin/users", {
+		csrfToken: req.csrfToken(),
+		req: req,
+	});
+};

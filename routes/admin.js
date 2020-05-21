@@ -8,5 +8,6 @@ router.get("/", adminController.getIndex);
 router.get("/posts", adminController.getPosts);
 router.get("/userInfo", adminController.getUserInfo);
 router.get("/products", adminController.getProducts);
+router.get("/users", adminController.getUsers);
 
 module.exports = router;

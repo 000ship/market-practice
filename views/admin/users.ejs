@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<meta name="csrf-token" content="<%= csrfToken %>" />
+	<head>
+		<%- include('../includes/admin/head.ejs') %>
+	</head>
+	<title>Admin Panel</title>
+	<body style="background-color: #f7f2f7;">
+		<div class="container-fluid">
+			<div class="row">
+				<!-- Left side Menu -->
+				<%- include('../includes/admin/leftPanel.ejs') %>
+				<!-- Right side  -->
+				<div class="col-lg-9">
+					<!-- navbar -->
+					<%- include('../includes/admin/navbar.ejs') %>
+					<!-- panel page -->
+					<!-- Alert -->
+					<div class="row" style="margin: 10px 0; padding: 13px 15px 0px 15px;"></div>
+					<div class="row">
+						<div class="main-panel">
+							<table id="userTable" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Image</th>
+										<th>Name</th>
+										<th>Role</th>
+										<th>E-mail</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Scripts -->
+			<%- include('../includes/admin/end.ejs') %>
+			<script src="/js/user-scripts.js" charset="utf-8"></script>
+		</div>
+	</body>
+</html>

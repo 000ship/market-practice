@@ -63,6 +63,7 @@ const paymentRoutes = require("./routes/payment");
 
 // Api Routes
 const apiPostRoutes = require("./routes/api/post");
+const apiUserRoutes = require("./routes/api/user");
 const apiProductRoutes = require("./routes/api/product");
 const apiCartRoutes = require("./routes/api/cart");
 const apiAuthRoutes = require("./routes/api/auth");
@@ -108,6 +109,7 @@ app.use("/admin", adminRoutes);
 app.use(homeRoutes);
 app.use(apiPostRoutes);
 app.use(apiProductRoutes);
+app.use(apiUserRoutes);
 app.use(apiCartRoutes);
 app.use("/auth", apiAuthRoutes);
 
